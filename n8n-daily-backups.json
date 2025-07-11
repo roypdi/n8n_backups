@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-07-11T13:57:39.916Z",
-  "updatedAt": "2025-07-11T14:09:05.000Z",
+  "updatedAt": "2025-07-11T14:22:59.000Z",
   "id": "AkEboQ4d3RkY4mCc",
   "name": "N8N Daily Backups",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -52,7 +52,7 @@
             {
               "value1": "={{ $('Aggregate1').item.json.name }}",
               "operation": "contains",
-              "value2": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}-{{ $('Retrieve workflows').item.json.tags[0].name }}.json"
+              "value2": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}.json"
             }
           ]
         }
@@ -111,7 +111,7 @@
               "id": "b0fe1bcc-e79c-4a6b-b8b4-44222c8bf4e8",
               "name": "fileName",
               "type": "string",
-              "value": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}-{{ $('Retrieve workflows').item.json.tags[0].name }}.json"
+              "value": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}.json"
             }
           ]
         },
@@ -137,7 +137,7 @@
         },
         "repository": {
           "__rl": true,
-          "value": "n8n-backups",
+          "value": "n8n_backups",
           "mode": "name"
         }
       },
@@ -189,12 +189,10 @@
         },
         "repository": {
           "__rl": true,
-          "value": "n8n-backups",
-          "mode": "list",
-          "cachedResultName": "n8n-backups",
-          "cachedResultUrl": "https://github.com/rmonaro/n8n-backups"
+          "value": "n8n_backups",
+          "mode": "name"
         },
-        "filePath": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}-{{ $('Retrieve workflows').item.json.nodes[0].name }}.json",
+        "filePath": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}.json",
         "fileContent": "={{ $('To base').item.json.data }}",
         "commitMessage": "=backup-{{ $('Commit date & file name1').item.json.commitDate }}"
       },
@@ -224,12 +222,10 @@
         },
         "repository": {
           "__rl": true,
-          "value": "n8n-backups",
-          "mode": "list",
-          "cachedResultName": "n8n-backups",
-          "cachedResultUrl": "https://github.com/rmonaro/n8n-backups"
+          "value": "n8n_backups",
+          "mode": "name"
         },
-        "filePath": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}-{{ $('Retrieve workflows').item.json.tags[0].name }}.json",
+        "filePath": "={{ $('Retrieve workflows').item.json.name.replace(/\\s+/g, '-').toLowerCase() }}.json",
         "fileContent": "={{ $('To base').item.json.data }}",
         "commitMessage": "=backup-{{ $node['Commit date & file name1'].json.commitDate }}"
       },
@@ -350,12 +346,16 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "12dcfdfb-8ae3-4ab5-adcf-c86ec19b95ec",
-  "triggerCount": 0,
+  "versionId": "77a4f214-dcaa-414e-94c3-f91960e4d4fe",
+  "triggerCount": 1,
   "tags": []
 }
