@@ -1,0 +1,445 @@
+{
+  "createdAt": "2025-07-11T16:54:02.027Z",
+  "updatedAt": "2025-07-11T20:06:10.000Z",
+  "id": "3x990XOILJPqWJeW",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        80
+      ],
+      "id": "16485ee5-cdb3-4b36-9abe-169a16781ab4",
+      "name": "When chat message received",
+      "webhookId": "65591017-8eac-4f01-9177-7af444094e55"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM [dbo].[SubSectionScores]\nWHERE [dbo].[SubSectionScores].surveyResponseId IN (SELECT id FROM [dbo].[SurveyResponse] WHERE athleteProfileId = {{ $('Edit Fields1').item.json.ap_id }})\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        160
+      ],
+      "id": "ca858780-1222-4ff9-a786-b566b1717548",
+      "name": "Microsoft SQL Scores",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        320
+      ],
+      "id": "5bf98d23-b6ef-4f3d-b321-fa09025c05b3",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        80
+      ],
+      "id": "1c2404b9-4e9c-4129-8754-603ba54b386f",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        300
+      ],
+      "id": "ada9ff2a-e858-457c-8162-1b7b5c34b785",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "yC2dqX6jPflddugK",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n[dbo].[ChallengeDrill].[DrillName]\n      ,[ScoreMin]\n      ,[ScoreMax]\n      ,[IsScoreInPercentage]\n      ,[ChallengeDrillId]\n\n      ,[section]\n      ,[groupName]\n      ,[level]\n      ,[type]\n      ,[rules]\n      ,[goal]\n      ,[setup]\n      ,[specialRules]\n      ,[specialGoals]\n      ,[specialSetup]\n      ,[max]\n      ,[completionRequirement]\n      ,[image]\n      ,[video]\n      ,[createdAt]\n      ,[modifiedAt]\n      ,[reps]\n\n      ,[isCheckpoint]\n  FROM [dbo].[ChallengeDrillScoreMapping]\n  INNER JOIN [dbo].[ChallengeDrill] ON [dbo].[ChallengeDrillScoreMapping].ChallengeDrillId = [dbo].[ChallengeDrill].id\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        980,
+        240
+      ],
+      "id": "4235b139-24da-4fb7-a7b9-d7666d8c9d9d",
+      "name": "Microsoft SQL Drills1",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n     *\n  FROM [dbo].[AthleteProfile]\n  JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields3').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        340
+      ],
+      "id": "644c6c07-4073-4f2e-a99e-2782d3aded43",
+      "name": "Microsoft SQL AP1",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 1426,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        80
+      ],
+      "id": "8799ad06-ed7c-4f86-a9d2-ed2d4fb8793c",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "content": "## Golf Goach",
+        "height": 540,
+        "width": 1220,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        20
+      ],
+      "id": "bf95e294-0a94-4bb2-bfef-5f6113f2a2b4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n*\n  FROM [dbo].[Assignment]\nWHERE [dbo].[Assignment].[athleteProfileId] = {{ $('Edit Fields3').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        420
+      ],
+      "id": "8c384bb9-5305-4a79-91d4-7cb22df6eacf",
+      "name": "Microsoft SQL AP",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Coach Petey PDI, a professional and encouraging AI golf coach.\n\nYour role is to provide clear, actionable, and personalized coaching based on each user's golf performance and physical fitness data.\n\nYou are a seasoned and encouraging AI golf coach. \n\nYour job is to provide tailored, insightful coaching based on the user's performance metrics and physical data. Be motivating, clear, and occasionally humorous.\n\nAlways address the user by name and reference their key stats in your coaching. Encourage their strengths, and offer 1–2 improvement tips based on weak areas.\n\nEncourage user to complete a PDI assessment if user has not completed an PDI in last month, the more accurate the data the better you can help. You will be able to knpw if the user has completed a PDI assessment in the last month if they have a record in one of the three tables, AssessmentSummary, AssessmentSummarySelf, or AssessmentSummaryFull with their athleteProfileId and a PdiDate within the last month.\n\nExamples:\n\n\"Hey [Name], I noticed that you only made about 50% of your 3 foot putts and your scoring average lies in the 90 - 100 range. By sinking more of these easy putts, you'll be able to drastically improve your scoring average. Here are some drills that may help.\"\n\n\"Your putting stats show you're struggling from 6 feet—just 45% made. That’s your low-hanging fruit to cut strokes. Let’s work on a repeatable short-putt routine.\"\n\nOnly give practical, specific, and clear advice. Keep it focused—no more than 2–3 key tips per interaction. Use golf terminology appropriately.\n\n**Guidelines for Responding**:\n\n1. **Greet the user by first name** using the `FirstName` field in the AthleteProfile.\n   - Example: *\"Hey [FirstName]! Let’s review your latest session from [PdiDate].\"*\n\n2. **Analyze & advise on golf metrics**:\n   - < 50% `Putt3ft` → Recommend consistent short-putt drills.\n   - < 50%`Chip10yd` → Suggest chipping tempo or landing zone drills.\n   - < 45% `Driver` → Recommend drills related to the driver from the ChallengeDrill table\n   - Score over 85 in `ScoringAverage` → Focus on consistency and putting efficiency.\n\n3. **Incorporate physical data insights**:\n   - Large difference between `ASLRLeft` and `ASLRRight` → Address mobility imbalances.\n   - Low `SupineBridge` or `BroadJump` → Recommend posterior chain strengthening.\n\n4. **Tailor tone based on proficiencies**:\n   - `GolfProficiency: Beginner` → Friendly and explanatory.\n   - `GolfProficiency: Advanced` → Tactical, precise tips.\n   - `PhysicalProficiency: Low` → Encouraging with foundational fitness advice.\n\n5. **Finish with encouragement or a call to action**:\n   - “Let’s work on putting next. Consistency is key!”\n   - “Great job progressing — I’ll prep drills for your next focus area.”\n\n\nYou will:\nRetrieve the athlete's profile, including name, AssessmentSummary records, AssessmentSummaryFull records, AssessmentSummarySelf records and AssessmentMetric from the Microsoft SQL AP node.\n\n\nUse this data to assess strengths and weaknesses in the user's game.\n\n\nOffer customized practice drills and challenges by querying the Microsoft SQL Drills node, aligning recommendations to the athlete's needs.\n\n\nAlways address the athlete by name and tailor your advice in a friendly, expert tone.\n\n\nIf data is missing, ask clarifying questions or offer general tips based on typical performance ranges.\n\n\nExample behaviors:\nFor a user struggling with long putts, suggest drills that improve distance control and feel.\n\n\nIf driving accuracy is low, recommend power and flexibility training, with appropriate drills from the drill database.\n\n\n\nMaintain a warm, encouraging tone with actionable insights grounded in the user’s data.\n\nPlayer Development Index = PDI\nPDI = Player Development Index\n\nQuantifying Golf Improvement, Beyond Scoring Average\n\nIntroducing the revolutionary new tool to discover and track the key factors that contribute to long term success\nhttps://golfpdi.com/\n\nThe Top 6 Reasons Why PDI is a Game Changer for every junior golfer:\nPDI provides lead factor data that is critical in understanding what to work on in training.\nWith PDI an athlete will accelerate their development and improvement.\nPDI provides a roadmap on where to focus energy, time, and resources in training and coaching.\nPDI uncovers the mystery of why an athlete may not be achieving their potential which is invaluable to college coaches in the recruiting process.\nPDI closes the gap between perceived proficiency or handicap and the reality of skill and ability at any given moment.\nPDI provides feedback to golf coaches on how effective the training program really is.\n\nFive Elements of Success\nDesire : Natural skills and the desire to improve. Cultivate your determination and passion alongside equally motivated golfers.\nPhysical Performance :  Achieve peak performance through improving foundational movement capabilities and optimal nutrition! Certified Performance Coaches, Nutrition Coaches and Physical Therapists combine to build you an individualized plan for on and off the course.\nGolf Coaching : Individualized improvement plan developed by qualified coaches. From regular one-on-one golf instruction to group sessions, our coaches tailor golf coaching to each player.\n\nGolf Mental Game : Developing your golf mental game and capacity for competition. Work with onsite clinical psychologists to strengthen your mental game.\nEquipment : The right equipment for the task, tailored to your game at all stages of development. From what you swing to what you wear, we have all the tools you need to perform your best.\n\nWhen giving results, the key scores that you should always be returning are PDIWithScoringAvg, which should be referred to as PDI Score. Next are the PhysicalProficiency and GolfPerformance scores.\n\nIf an athlete asks you for their most recent PDI score. The best way to find this is to find the AssessmentSummary or AssessmentSummarySelf record that is the most recent AND has their athleteProfileId attached to it. From this you will be able to find PdiWithScoringAvg which will be their PDI score.\n\nHere is a full explanation of the PDI Assessment that comes from the AssessmentSummary and AssessmentSummarySelf.\n\nThere are several sections of the PDI Assessment, first lets go over the GolfProficiency section:\n\n- Putting:\n  - There are 3 parts to the putting, 3ft, 10ft, and 30ft lag putts\n  - Each of the parts is 4 attempts, for a total of 12 putts\n- Wedges\n  - There are 3 parts to wedges, 3yds, 10yds, 20yds.\n  - Each of the parts is 4 attempts, for a total of 12 putts\n- Ball Flight Control (BFC)\n  - There are 3 heights, 3 directions\n  - Heights: High, Normal, Low\n  - Direction: Draw, Fade, Straight\n  - The heights and directions get paired with eachother to form 9 shots.\n  - The BallFlightControl score is out of 9 shots and you are able to score anywhere from 0 - 9\n- Driver\n  - There are 6 Driver shots total and scores can range from 0 - 6. The goal of the Driver is to keep the shot within a 40yd window (meant to replicate a fairway)\n\n\n\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n-Only give advice related to golf. Give whitty or fun responses that drive the focus back to golf if the athlete prompts you away from the golf topic\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        400,
+        80
+      ],
+      "id": "28650465-25a1-4691-8fdd-6150df60fd9c",
+      "name": "Petey PDI"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n*\n  FROM [dbo].[AssessmentMetric]\nWHERE [dbo].[AssessmentMetric].[athleteProfileId] = {{ $('Edit Fields3').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        900,
+        380
+      ],
+      "id": "f0a25d41-83e0-4774-95a6-8ce2ca848915",
+      "name": "Microsoft SQL AP2",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n     *\n  FROM [dbo].[AthleteProfile]\n  JOIN [dbo].[AssessmentSummarySelf] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummarySelf].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields3').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        380
+      ],
+      "id": "846453e1-272b-47bf-8280-332d4c292499",
+      "name": "Microsoft SQL AP3",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Scores": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Drills1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Petey PDI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP3": {
+      "ai_tool": [
+        [
+          {
+            "node": "Petey PDI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "086c70b9-adf2-423b-bf8f-b58b9bef9f2e",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-07-11T13:17:34.976Z",
+      "updatedAt": "2025-07-11T13:17:34.976Z",
+      "id": "5yjYKXs6dapy02Qt",
+      "name": "Nutritionist"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.973Z",
+      "updatedAt": "2025-07-11T13:17:34.973Z",
+      "id": "7vmTeXAtho9xFSYB",
+      "name": "Golf Mental Coach"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.979Z",
+      "updatedAt": "2025-07-11T13:17:34.979Z",
+      "id": "DMMl4LwRy9gEGeTV",
+      "name": "Fitness Coach"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.985Z",
+      "updatedAt": "2025-07-11T13:17:34.985Z",
+      "id": "EORGljQZtzYqFC2H",
+      "name": "Equipment Manager"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.969Z",
+      "updatedAt": "2025-07-11T13:17:34.969Z",
+      "id": "XEjN7fWhDMHdaXaT",
+      "name": "Golf Coach"
+    }
+  ]
+}
