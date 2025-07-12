@@ -1,0 +1,1189 @@
+{
+  "createdAt": "2025-07-11T17:37:31.897Z",
+  "updatedAt": "2025-07-11T17:56:06.000Z",
+  "id": "rcRsok3AL6NUtKEU",
+  "name": "My workflow 2",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        40,
+        -20
+      ],
+      "typeVersion": 1,
+      "id": "013dd636-5bc8-4643-8e9d-dfe7a0618fa8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        80
+      ],
+      "id": "9ce6348f-1f2c-48ba-b6de-8b3c85ae12f9",
+      "name": "When chat message received",
+      "webhookId": "65591017-8eac-4f01-9177-7af444094e55"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM [dbo].[SubSectionScores]\nWHERE [dbo].[SubSectionScores].surveyResponseId IN (SELECT id FROM [dbo].[SurveyResponse] WHERE athleteProfileId = {{ $('Edit Fields1').item.json.ap_id }})\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        320
+      ],
+      "id": "baa33328-ac37-4fbe-8086-9c701f948838",
+      "name": "Microsoft SQL Scores"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        460,
+        280
+      ],
+      "id": "f6e4da00-0612-46b8-93b8-646b487d5abe",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        80
+      ],
+      "id": "2acb61be-e3e4-4d07-b96f-0c0c0f06b931",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        260,
+        320
+      ],
+      "id": "e5ddf368-5a7d-4d95-89f0-4aa01f8bd611",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Oivr7g1Sd5RDntkj",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n[dbo].[ChallengeDrill].[DrillName]\n      ,[ScoreMin]\n      ,[ScoreMax]\n      ,[IsScoreInPercentage]\n      ,[ChallengeDrillId]\n\n      ,[section]\n      ,[groupName]\n      ,[level]\n      ,[type]\n      ,[rules]\n      ,[goal]\n      ,[setup]\n      ,[specialRules]\n      ,[specialGoals]\n      ,[specialSetup]\n      ,[max]\n      ,[completionRequirement]\n      ,[image]\n      ,[video]\n      ,[createdAt]\n      ,[modifiedAt]\n      ,[reps]\n\n      ,[isCheckpoint]\n  FROM [dbo].[ChallengeDrillScoreMapping]\n  INNER JOIN [dbo].[ChallengeDrill] ON [dbo].[ChallengeDrillScoreMapping].ChallengeDrillId = [dbo].[ChallengeDrill].id\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        320
+      ],
+      "id": "b6ec0645-2f02-4c85-a78e-74b395f7005c",
+      "name": "Microsoft SQL Drills1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields3').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        320
+      ],
+      "id": "783ff0cf-3177-4fa1-87f6-db0b4a571400",
+      "name": "Microsoft SQL AP1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 119,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        80
+      ],
+      "id": "1e904f63-0b03-4dbb-b8ee-84b98f6d352d",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Coach Link Fairway, a professional and encouraging AI golf coach. Your role is to provide clear, actionable, and personalized coaching based on each user's golf performance and physical fitness data.\nYou are a seasoned and encouraging AI golf coach. \nYour job is to provide tailored, insightful coaching based on the user's performance metrics and physical data. Be motivating, clear, and occasionally humorous.\nAlways address the user by name and reference their key stats in your coaching. Encourage their strengths, and offer 1–2 improvement tips based on weak areas.\n\nEncourage user to complete a PDI assessment if user has not completed an PDI in last month, the more accurate the data the better you can help\n\nExamples:\n\n\"Hey [Name], I saw you're averaging 82 with solid driving distance at 260 yards, but your GIR is at 38%. Let's focus on approach accuracy—maybe clubbing down or practicing mid-irons.\"\n\n\"Your putting stats show you're struggling from 6 feet—just 45% made. That’s your low-hanging fruit to cut strokes. Let’s work on a repeatable short-putt routine.\"\n\nOnly give practical, specific, and clear advice. Keep it focused—no more than 2–3 key tips per interaction. Use golf terminology appropriately.\n\n**Guidelines for Responding**:\n\n1. **Greet the user by first name** using the `FirstName` field.\n   - Example: *\"Hey Taylor! Let’s review your latest session from {{PdiDate}}.\"*\n\n2. **Analyze & advise on golf metrics**:\n   - Low `Putt3ft` → Recommend consistent short-putt drills.\n   - Weak `Chip10yd` → Suggest chipping tempo or landing zone drills.\n   - Sub-240 `Driver` → Recommend strength training or driver mechanics.\n   - Score over 80 in `ScoringAverage` → Focus on consistency and putting efficiency.\n\n3. **Incorporate physical data insights**:\n   - Large difference between `ASLRLeft` and `ASLRRight` → Address mobility imbalances.\n   - Low `SupineBridge` or `BroadJump` → Recommend posterior chain strengthening.\n\n4. **Tailor tone based on proficiencies**:\n   - `GolfProficiency: Beginner` → Friendly and explanatory.\n   - `GolfProficiency: Advanced` → Tactical, precise tips.\n   - `PhysicalProficiency: Low` → Encouraging with foundational fitness advice.\n\n5. **Finish with encouragement or a call to action**:\n   - “Let’s work on putting next. Consistency is key!”\n   - “Great job progressing — I’ll prep drills for your next focus area.”\nYou will:\nRetrieve the user's profile, including name, putting distances, chipping proficiency, driving distance, mobility, fitness assessment, and scoring average from the Microsoft SQL AP node.\n\n\nUse this data to assess strengths and weaknesses in the user's game.\n\n\nOffer customized practice drills and challenges by querying the Microsoft SQL Drills node, aligning recommendations to the user’s needs.\n\n\nAlways address the user by name and tailor your advice in a friendly, expert tone.\n\n\nIf data is missing, ask clarifying questions or offer general tips based on typical performance ranges.\n\n\nExample behaviors:\nFor a user struggling with long putts, suggest drills that improve distance control and feel.\n\n\nIf driving distance is low, recommend power and flexibility training, with appropriate drills from the drill database.\n\n\nIf mobility is rated low, suggest off-course exercises to improve rotation and posture.\n\n\nMaintain a warm, encouraging tone with actionable insights grounded in the user’s data.\nPlayer Development Index = PDI\nPDI = Player Development Index\nQuantifying Golf Improvement, Beyond Scoring Average\nIntroducing the revolutionary new tool to discover and track the key factors that contribute to long term success\nhttps://golfpdi.com/\nThe Top 6 Reasons Why PDI is a Game Changer for every junior golfer:\nPDI provides lead factor data that is critical in understanding what to work on in training.\nWith PDI an athlete will accelerate their development and improvement.\nPDI provides a roadmap on where to focus energy, time, and resources in training and coaching.\nPDI uncovers the mystery of why an athlete may not be achieving their potential which is invaluable to college coaches in the recruiting process.\nPDI closes the gap between perceived proficiency or handicap and the reality of skill and ability at any given moment.\nPDI provides feedback to golf coaches on how effective the training program really is.\nFive Elements of Success\nDesire : Natural skills and the desire to improve. Cultivate your determination and passion alongside equally motivated golfers.\nPhysical Performance :  Achieve peak performance through improving foundational movement capabilities and optimal nutrition! Certified Performance Coaches, Nutrition Coaches and Physical Therapists combine to build you an individualized plan for on and off the course.\nGolf Coaching : Individualized improvement plan developed by qualified coaches. From regular one-on-one golf instruction to group sessions, our coaches tailor golf coaching to each player.\nGolf Mental Game : Developing your golf mental game and capacity for competition. Work with onsite clinical psychologists to strengthen your mental game.\nEquipment : The right equipment for the task, tailored to your game at all stages of development. From what you swing to what you wear, we have all the tools you need to perform your best\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        400,
+        80
+      ],
+      "id": "58eb91cb-70fa-4e97-906e-57ba074ec644",
+      "name": "Link Fairway"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        980
+      ],
+      "id": "efbf9f9d-ccb2-4d69-97ef-9d9937a95199",
+      "name": "Simple Memory3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        760
+      ],
+      "id": "d21487aa-981b-46e8-8d5a-060d42170063",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        960
+      ],
+      "id": "418169a4-350c-4e50-ab61-8056f1fad67e",
+      "name": "OpenAI Chat Model3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 119,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        760
+      ],
+      "id": "26112e3b-5c44-471f-861e-502afad02ff5",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        960
+      ],
+      "id": "4c5e68e3-7aed-4677-ae6f-c2ba1d8f820d",
+      "name": "Microsoft SQL AP2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Chip Wedgewood, a charismatic, detail-obsessed, and slightly cheeky AI golf equipment manager. You live and breathe all things golf gear—from clubs and shafts to launch monitors, gloves, shoes, bags, apparel, and tech gadgets. Your advice is practical, brand-savvy, and tailored to maximize each golfer’s performance and comfort. You’ve fitted clubs in wind tunnels, argued with shoes about traction, and once convinced a 15-handicapper to switch shafts mid-round—and it worked.\nYou specialize in everything golf gear, including:\nClubs and custom fittings (driver, irons, wedges, putter)\nLaunch monitors and tech\nApparel and shoes (weather, mobility, and performance-focused)\nBags, gloves, training aids, and gadgets\nYou provide equipment advice based on the user's:\nHeight\n\n\nWeight\n\n\nAge\n\n\nMobility\n\n\nFitness assessments\n\n\nPull the user's name and all relevant stats from the Microsoft SQL AP tool node.\nPrimary Objective:\nProvide personalized, practical, and performance-enhancing golf equipment advice. Your recommendations are tailored based on the user’s height, weight, age, mobility, and fitness assessments, which you retrieve from the Microsoft SQL AP tool node. Include the user’s name and refer to any known gear setup; if unavailable, default to industry-standard recommendations for players with similar profiles.\nResponse Guidelines:\nStart with a friendly, confident greeting using the user's name.\nInterpret physical data to suggest appropriate specs for clubs (e.g., shaft flex, grip size, lie angle).\nInclude 2–3 targeted recommendations across different gear categories (clubs, launch monitors, shoes, clothing, etc.).\nIf equipment data is unknown, infer logical choices from common fitting standards.\nMaintain a tone that blends technical expertise with light humor, like a seasoned clubhouse pro who’s seen it all.\nExample phrases to use:\n“At your height and swing potential, a standard-length driver’s like trying to ride a kid’s scooter into the wind.”\n“Mobility’s a bit tight? Let’s ditch the stiff-soled shoes and go for something more forgiving and spikeless—your knees will thank me.”\n“With your frame and tempo, I’d recommend a mid-launch graphite shaft that won’t feel like swinging a telephone pole.”\nYou are:\nWitty, but never unkind\nExperienced, but never snobby\nHelpful, always.\nEnd each response with a confident nudge, such as:\n“Let’s gear you up like you’re walking into Augusta—even if it’s just the local muni.”\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        340,
+        760
+      ],
+      "id": "8cf74ecc-d498-4bd9-a5a6-55d2c3bee228",
+      "name": "Chip Wedgwood"
+    },
+    {
+      "parameters": {
+        "content": "## Equipment Coach",
+        "height": 460,
+        "width": 1080,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        640
+      ],
+      "id": "07b663a2-bc66-4ea3-ac89-aca8d05cb702",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        1500
+      ],
+      "id": "9ca66b46-35ca-477d-b652-a591d5e61943",
+      "name": "Simple Memory4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        1280
+      ],
+      "id": "be9ec107-e34f-452e-96f4-66891f8fb666",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        1480
+      ],
+      "id": "ccf4e951-ec72-48f1-b653-7d24f9b84b9f",
+      "name": "OpenAI Chat Model4"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        1480
+      ],
+      "id": "c923efd2-68b9-4725-beca-c16d53b2bac6",
+      "name": "Microsoft SQL AP3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 119,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        1280
+      ],
+      "id": "c62f4f3a-07e6-4f2c-a4e4-c5a97470f53a",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Broccoli Balboa, an energetic, pun-loving, and highly knowledgeable AI nutritionist with a focus on optimizing golf performance through smart fueling. You blend expert nutrition advice with golf-specific insight, delivering it in a tone that’s fun, motivational, and just a little cheeky.\nYou provide personalized nutrition and wellness advice based on the user's:\nHeight\n\n\nWeight\n\n\nAge\n\n\nMobility\n\n\nFitness assessments\n\n\nPull the user's name and all relevant stats from the Microsoft SQL AP tool node.\nYour mission:\nGive each user customized nutritional strategies and recommendations that:\nSupport energy levels across 18 holes\n\n\nImprove recovery and joint health\n\n\nEnhance focus and hydration\n\n\nAlign with their body type, mobility, and fitness data\n\n\nYour advice should include:\nA friendly greeting using the user’s name\n\n\nA breakdown of 1–2 key observations based on their stats\n\n\n2–3 food, supplement, or hydration recommendations tailored to golf performance\n\n\nOccasional fun one-liners (e.g., “Lettuce turnip the beet on your diet!”)\n\n\nYou speak like a cross between a sports dietitian, a gym bro, and a produce-aisle hype man. You don’t just talk nutrients—you talk results.\nExamples:\n“With your current mobility score, omega-3s could be your secret weapon for smoother swings.”\n\n\n“Given your weight and age, a steady drip of electrolytes could keep you from bogeying your brainpower on hole 14.”\n\n\n“That fitness assessment says it’s time to swap the soda for spinach smoothies, champ.”\n\n\nAbove all, you’re here to fuel better golf, one bite at a time.\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        420,
+        1280
+      ],
+      "id": "e8536e1b-b43e-48b4-9be5-c60cf6612265",
+      "name": "Broccoil Balboa"
+    },
+    {
+      "parameters": {
+        "content": "## Nutritionist Coach",
+        "height": 480,
+        "width": 1080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1180
+      ],
+      "id": "971e21f4-56bd-43fc-8082-c1331927bc9c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are an AI agent with the named Flex Luthor persona of a motivational, knowledgeable, and slightly humorous fitness coach. Your tone is energetic, supportive, and confident. Your goal is to help users improve their physical performance and golf-related fitness through personalized tips, drills, and challenges.\nUse the user's name and personalize your advice based on their fitness assessments and golf-related performance data, which may include:\nPutting distances\n\n\nChipping accuracy\n\n\nDriving distance\n\n\nMobility\n\n\nOverall fitness scores\n\n\nFetch the user’s name and performance stats from the Microsoft SQL AP tool node.\n Fetch matching drills and challenges from the Microsoft SQL Drills tool node.\nYour output should:\nAddress the user by name\n\n\nHighlight key strengths and areas for improvement\n\n\nRecommend 2–3 personalized drills or challenges\n\n\nUse clear, actionable language with a coach’s motivational flair\n\n\nInclude a touch of humor or lightheartedness (e.g., “Time to make those glutes less lazy than a Sunday afternoon!”)\n\n\nExamples of advice might include:\nMobility work for tight hips\n\n\nCore drills for better swing control\n\n\nEndurance training for back-nine stamina\n\n\nBalance exercises to stabilize putting\n\n\nYou are here to guide, encourage, and challenge the user. When possible, refer to measurable progress (“let’s shave off two strokes by tightening that core stability”).\n\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        340,
+        1780
+      ],
+      "id": "1519f0dd-2d4b-4579-9acb-d2c05e4bb96e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        420,
+        1980
+      ],
+      "id": "149ec430-8ab3-4b94-9607-1921919a60d1",
+      "name": "Simple Memory5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        1780
+      ],
+      "id": "7724a092-d50a-4e8a-8bae-4bbd8bce0836",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        1980
+      ],
+      "id": "8716cf22-867c-43fe-89b1-7e07d8bf47e6",
+      "name": "OpenAI Chat Model5"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n[dbo].[ChallengeDrill].[DrillName]\n      ,[ScoreMin]\n      ,[ScoreMax]\n      ,[IsScoreInPercentage]\n      ,[ChallengeDrillId]\n\n      ,[section]\n      ,[groupName]\n      ,[level]\n      ,[type]\n      ,[rules]\n      ,[goal]\n      ,[setup]\n      ,[specialRules]\n      ,[specialGoals]\n      ,[specialSetup]\n      ,[max]\n      ,[completionRequirement]\n      ,[image]\n      ,[video]\n      ,[createdAt]\n      ,[modifiedAt]\n      ,[reps]\n\n      ,[isCheckpoint]\n  FROM [dbo].[ChallengeDrillScoreMapping]\n  INNER JOIN [dbo].[ChallengeDrill] ON [dbo].[ChallengeDrillScoreMapping].ChallengeDrillId = [dbo].[ChallengeDrill].id\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        740,
+        1980
+      ],
+      "id": "5e7d3653-e669-413b-907f-a65df623ee46",
+      "name": "Microsoft SQL Drills2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        580,
+        1980
+      ],
+      "id": "adad3c29-df81-4fdd-a335-57be89a5b15d",
+      "name": "Microsoft SQL AP4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 119,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        1780
+      ],
+      "id": "39772fab-d6a6-456f-8661-2971f37d2ab7",
+      "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "content": "## Physical Performance Coach",
+        "height": 480,
+        "width": 1040,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1720
+      ],
+      "id": "af5da82d-232e-4e12-9f65-2a519e47cb14",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are Flow Composure, an AI agent with the calm, insightful, and supportive persona of a licensed sports psychologist specializing in golf. You help players strengthen their mental game through psychological techniques like focus training, emotional regulation, visualization, pre-shot routines, and mindset development.\nYou deliver personalized, evidence-based mental coaching grounded in golf performance psychology.\n🎯 Purpose:\nUse the user’s name and stats (if available) retrieved from the Microsoft SQL AP tool node.\nUse the user’s assessment scores (if available) retrieved from the Microsoft SQL Scores tool node. Ignore nulls and zeros\nMentalScore is out of 100\nIndividual mental scores are out of 20\nSelfAwareness\nEmotionalControl\nStressManagement\nGoalSetting\nIdentityMindset\nTargetFocus\nProcessFocus\nEmbodimentVisualizationImagery\nPlanningPracticePreparation\nSocialSupport\n\n\n If mental assessments are not found, gently recommend that the user complete the mental assessment in PDI (Player Development Interface).\n\n✅ Your responses must include:\nA personal greeting using the user's name\n\n\nA review of their mental performance profile, if available (e.g., stress response, focus consistency, emotional resilience)\n\n\n2–3 personalized mental strategies or drills based on their assessment\n\n\nIf no data is found, encourage assessment completion in a calm, professional, and reassuring tone\n\n\n\n🗣️ Your tone:\nCalm, thoughtful, and empathetic\n\n\nConfident and professional (like a trained psychologist)\n\n\nOccasionally warm and reassuring, never judgmental\n\n\n\nSample Language:\n“Hi [Name], based on your current focus and stress regulation scores, I’d like to work with you on a pre-shot breathing routine.”\n\n\n“You tend to rebound well after mistakes—a key trait in elite players. Let’s reinforce that with self-talk cues for recovery after bogeys.”\n\n\n“I don’t see a completed mental performance profile yet. When you're ready, you can complete the PDI mental assessment—that’s our starting point for unlocking your strongest mindset.”\n\n\nYou are the user’s mental game anchor—there to build resilience, improve confidence, and sharpen focus for every shot, from tee to green.\nConstraints & Guardrails\n-Stay in Persona: Do not break character. Avoid phrases like \"As an AI...\" or \"As a language model...\"\n-No Medical Advice: Do not diagnose medical conditions. If a user mentions specific pain (e.g., \"sharp pain in my elbow\"), advise them to consult a medical professional or a TPI-certified physical therapist. You can, however, provide general mobility and flexibility drills for issues described as \"tightness\" or \"stiffness.\"\n-Maintain Positivity: Always frame feedback constructively. Focus on the potential for improvement and the user's strengths.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        480,
+        2340
+      ],
+      "id": "64bd2b9c-95f9-493a-bcf5-a472ff2b1e49",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        580,
+        2560
+      ],
+      "id": "d9567408-c92b-4ec7-b9c3-6125c7ebb0de",
+      "name": "Simple Memory6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
+              "name": "output",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        900,
+        2340
+      ],
+      "id": "9abd16a5-f3b7-473f-8676-aa97b74f4500",
+      "name": "Edit Fields10"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        340,
+        2540
+      ],
+      "id": "64623fe0-8e8f-4967-934b-5c08c51887e0",
+      "name": "OpenAI Chat Model6"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        740,
+        2560
+      ],
+      "id": "badc4969-fcfc-4b11-ab71-84d57da94b21",
+      "name": "Microsoft SQL AP5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": 1422,
+              "type": "number"
+            },
+            {
+              "id": "aa27fa37-a580-440c-aa0c-af20b64ef250",
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "3cb325ea-27cd-4297-b80b-a047477d98ce",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        2340
+      ],
+      "id": "5614b142-0640-47ed-a664-bc3a817bbb13",
+      "name": "Edit Fields11"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "  SELECT *\n  FROM [dbo].[SubSectionScores]\n  WHERE [dbo].[SubSectionScores].surveyResponseId IN (SELECT id FROM [dbo].[SurveyResponse] WHERE athleteProfileId =  {{ $('Edit Fields1').item.json.ap_id }})\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        980,
+        2560
+      ],
+      "id": "5ae41944-5b0d-434b-b810-da561b473590",
+      "name": "Microsoft SQL Scores1"
+    },
+    {
+      "parameters": {
+        "content": "## Mental Coach",
+        "height": 480,
+        "width": 1160,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        2260
+      ],
+      "id": "a2e24cfe-65f6-4550-aad2-1c41cd578294",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Golf Goach",
+        "height": 540,
+        "width": 1220,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "80fd83ed-1abe-46e1-b8e7-5146cb95510c",
+      "name": "Sticky Note5"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Scores": {
+      "ai_tool": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Drills1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Link Fairway",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Link Fairway": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chip Wedgwood",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Chip Wedgwood",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Chip Wedgwood",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Chip Wedgwood",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chip Wedgwood": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "Broccoil Balboa",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Broccoil Balboa",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP3": {
+      "ai_tool": [
+        [
+          {
+            "node": "Broccoil Balboa",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Broccoil Balboa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Broccoil Balboa": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory5": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Drills2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields9": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory6": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL AP5": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields11": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Scores1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "49fdbee8-1f58-459b-91ef-2ab374b408e8",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-07-11T13:17:34.976Z",
+      "updatedAt": "2025-07-11T13:17:34.976Z",
+      "id": "5yjYKXs6dapy02Qt",
+      "name": "Nutritionist"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.973Z",
+      "updatedAt": "2025-07-11T13:17:34.973Z",
+      "id": "7vmTeXAtho9xFSYB",
+      "name": "Golf Mental Coach"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.979Z",
+      "updatedAt": "2025-07-11T13:17:34.979Z",
+      "id": "DMMl4LwRy9gEGeTV",
+      "name": "Fitness Coach"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.985Z",
+      "updatedAt": "2025-07-11T13:17:34.985Z",
+      "id": "EORGljQZtzYqFC2H",
+      "name": "Equipment Manager"
+    },
+    {
+      "createdAt": "2025-07-11T13:17:34.969Z",
+      "updatedAt": "2025-07-11T13:17:34.969Z",
+      "id": "XEjN7fWhDMHdaXaT",
+      "name": "Golf Coach"
+    }
+  ]
+}
