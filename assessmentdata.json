@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-14T14:35:24.950Z",
-  "updatedAt": "2025-07-14T16:53:23.000Z",
+  "updatedAt": "2025-07-17T18:45:52.000Z",
   "id": "wtIRa9GuyX1CFh4k",
   "name": "AssessmentData",
   "active": false,
@@ -15,7 +15,7 @@
       "typeVersion": 1.1,
       "position": [
         0,
-        0
+        -40
       ],
       "id": "3202cc5b-d55f-44aa-a7df-ab555e6de523",
       "name": "Microsoft SQL",
@@ -33,8 +33,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        300,
-        0
+        340,
+        -40
       ],
       "id": "275b902a-657c-4dba-a0a3-bdc6c3aed598",
       "name": "Code"
@@ -91,7 +91,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "8fa6796a-1922-464d-a683-82e922e93f71",
+  "versionId": "4bb102ba-07a0-4d44-ae9b-795c39230b5a",
   "triggerCount": 0,
   "tags": []
 }
