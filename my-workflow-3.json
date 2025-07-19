@@ -1,0 +1,528 @@
+{
+  "createdAt": "2025-07-18T14:33:01.030Z",
+  "updatedAt": "2025-07-18T15:10:50.000Z",
+  "id": "tQO4EIBG2J7qid1s",
+  "name": "My workflow 3",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Athlete's Question: \n{{ $('Webhook').item.json.body.attributes.message }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Average of Last 3 Assessments:**\n{{ JSON.stringify($json.averageOfLastThree) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Address the athlete by name.\n- Review how they performed in the most recent assessment.\n- Compare it to their last 3 assessments and all-time average.\n- Highlight:\n  - Key improvements or declines\n  - Areas of strength\n  - Areas that need more work\n- Recommend 1–2 drills tailored to their weaknesses.\n- Recommend drills based on the drills from Microsoft SQL Drills node\n- Be clear, friendly, encouraging, and concise.\n\nIf no data is available then:\nIntroduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n",
+        "options": {
+          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach. Your role is to analyze a user's golf performance and physical fitness data from their PDI assessments and provide clear, personalized, and actionable coaching.\n\n*----------------------------------*\nRESPONSE FORMATTING:\n\nPlease send all responses in HTML format.\n\nHere are the guidelines for sending HTML elements:\n\nThe entire response should be encapsulated in a div with the classname \"response\".\n\nAny sub elements within the response whould be grouped in a div with the class name \"group\".\n\nAll headers should use h2 elements with classname \"header\"\n\nAll Subheaders should use h4 elements with classname \"subheader\"\n\nWhen trying to emphasize words or treat them as bold DO NOt use **, use <b> </b> elements instead\n\nExample:\n\n\"Hi! I'm Petey. Let's get started!\" -> \n\n\"<div className=\"response\">\n  <div classname=\"group\">\n  <p><b>Hi!</b></p>\n  <p>I'm Petey. Let's get started! </p>\n  </div>\"\n</div>\n\n*----------------------------------*\n\nAs a coach you also have multiple tasks:\n- Introducing new athlete's to PDI (only if they have no assessment data)\n- Provide daily, personalized drills\n- Generate two week improvement plans based on most recent and average PDI assessment results\n- Give athletes detailed breakdown of their most recent assessment\n- Provide personalized coaching feedback and insight based on standard golf knowledge and PDI assessment data\n\n**if a user has no previous assessments**\nIntroduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n**drill recommendation**\nWhen offering customized practice drills and challenges get drills by querying the Microsoft SQL Drills node, aligning recommendations to the user’s needs.\n\n\nAlways address the athlete by name and refer to key stats in your advice. Be professional, supportive, and occasionally humorous to keep the tone light and motivating.\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---\n\n**Your Job:**\n\n- Assign relevant drills daily:\n  - If athlete is looking for something to work on or ways to improve provide 1 drill to focus on for the day that aligns with their weaknesses from their most recent assessment\n\n- Review and compare:\n  - The **latest assessment**\n  - The **average of the last 3 assessments** (refer to as “average of the last 3 assessments”)\n  - The **average of all assessments** (refer to as “average”)\n- Analyze performance trends, highlighting:\n  - Areas of **improvement**\n  - Areas that are still **struggling**\n  - Areas of **consistent strength**\n- Give 1–2 **actionable improvement tips**, and recommend specific **drills** based on weak areas.\n- When referencing any data point, always state whether it's from the latest, 3-assessment average, or all-time average.\n\n---\n\n**Notes:**\n\n- If the athlete hasn't completed a PDI assessment in the last 14 days, encourage them to do so to ensure the coaching stays accurate and helpful.\n- Be concise, actionable, and supportive.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        760,
+        0
+      ],
+      "id": "453696a9-b316-4a3d-bb4d-c13fbd7ed625",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        660,
+        320
+      ],
+      "id": "345a3f23-e90b-461e-b204-2254f8094d38",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1812719b-d5cb-4269-809b-69bea648a8f1",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1220,
+        0
+      ],
+      "id": "5617fb79-cd4f-4025-a374-c45d8da72fd6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        500,
+        320
+      ],
+      "id": "30f2c1bf-9b6e-47e9-86bb-21af35635cf6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "yC2dqX6jPflddugK",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use to get a list of drills to recommend to the athlete",
+        "operation": "executeQuery",
+        "query": "SELECT cd.* \nFROM assignment a\nLEFT JOIN challengedrill cd ON a.challengeDrillId = cd.id\nWHERE a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }};\n\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        320
+      ],
+      "id": "75ff76e6-a871-4249-90a1-7a9249536dd0",
+      "name": "Microsoft SQL Drills",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n\n      ,[Active]\n\n      ,[Gender]\n\n      ,[DateOfBirth]\n      ,[PersonalBio]\n      ,[FamilyProfile]\n      ,[HomeCity]\n      ,[HomeState]\n\n      ,[Height]\n      ,[Weight]\n      ,[ClubHeadSpeed]\n      ,[CarryDistance]\n      ,[FirstTournamentYear]\n      ,[SATScore]\n      ,[ACTScore]\n      ,[PSATScore]\n      ,[MembershipTier]\n      ,[MembershipExpires]\n      ,[UsedTrialUpgrade]\n      ,[IsRegistered]\n      ,[CurrentSchoolPhone]\n      ,[AcceptanceSchoolName]\n      ,[RankAGAUpdated]\n      ,[RankJGSNational]\n      ,[RankJGSState]\n      ,[RankJGSClass]\n      ,[RankJGSUpdated]\n      ,[Goals]\n      ,[CoolFacts]\n      ,[HomeAddress]\n      ,[HomeZip]\n      ,[HomePhone]\n      ,[MobilePhone]\n      ,[PublicEmail]\n\n      ,[Twitter]\n      ,[Instagram]\n      ,[GuidanceCounselor]\n      ,[GuidanceCounselorEmail]\n      ,[GuidanceCounselorPhone]\n      ,[Country]\n      ,[IsRanked]\n      ,[ContactAddress]\n      ,[ContactCity]\n      ,[ContactState]\n      ,[ContactZip]\n      ,[Middlename]\n      ,[HasSeenTournamentGuidelines]\n      ,[Slug]\n      ,[RankWAGRNational]\n      ,[RankWAGRState]\n      ,[RankWAGRClass]\n      ,[RankWAGRUpdated]\n      ,[Facebook]\n      ,[ParentsSchool]\n      ,[IsAppNotification]\n      ,[IsEmailNotification]\n      ,[ProfileStatus]\n      ,[VolunteerExperience]\n      ,[ADNCustomerProfileID]\n      ,[IsAutoRenew]\n      ,[PaymentPlan]\n      ,[LastRenewDate]\n      ,[PaymentAmount]\n      ,[SubscriptionDate]\n      ,[LongExpiryEmailSent]\n      ,[ShortExpiryEmailSent]\n      ,[LongAutoRenewEmailSent]\n      ,[ShortAutoRenewEmailSent]\n      ,[DiscountCodeApplied]\n      ,[IsFirstTimeLoggedInAfterMembershipExpired]\n      ,[LockedForResults]\n      ,[AcademicHonors]\n      ,[NewTournamentsAdded]\n      ,[SysStartTime]\n      ,[SysEndTime]\n      ,[IsContacted]\n      ,[TournamentScoringAverageLastYear]\n      ,[SnapChat]\n      ,[NCAAClearingHouse]\n      ,[NeedsWelcomeEmail]\n      ,[AthleteSourceId]\n      ,[HideFromSearchResults]\n      ,[HubCupStandingRank]\n      ,[HubCupStandingElibleTournamentCount]\n      ,[HubCupStandingScoringAverage]\n      ,[HubCupStandingRankLastUpdateDate]\n      ,[AthleteSuccesStoryFeedback]\n      ,[IsSuccessStoryApproved]\n      ,[AcceptanceSchoolId]\n      ,[AthletePlayerDevelopmentLevelID]\n      ,[IsPushNotification]\n      ,[IsWeeklyUpdateAdded]\n      ,[HwDidYouHearAboutUs]\n      ,[AthleteDominantHand]\n      ,[Priorities]\n      ,[userId]\n      ,[GolferType]\n      ,[HubAthleteProfileId]\n      ,[College]\n      ,[SelfAssessmentAllowance]\n ,[PdiDate]\n      ,[PdiWithScoringAvg]\n      ,[PdiWithoutScoringAvg]\n      ,[Putt3ft]\n      ,[Putt10ft]\n      ,[Putt30ft]\n      ,[Chip3yd]\n      ,[Chip10yd]\n      ,[Chip20yd]\n      ,[Driver]\n      ,[SixIronBFC]\n      ,[SupineBridge]\n      ,[BroadJump]\n      ,[ASLRLeft]\n      ,[ASLRRight]\n      ,[DeepSquat]\n      ,[ScoringAverage]\n      ,[SupineBridgeLeft]\n      ,[SupineBridgeRight]\n      ,[GolfPerformance]\n      ,[GolfProficiency]\n      ,[PhysicalProficiency]\n  FROM [dbo].[AthleteProfile]\n    INNER JOIN [dbo].[AssessmentSummary] ON [dbo].[AthleteProfile].[id] = [dbo].[AssessmentSummary].[athleteProfileId]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        720
+      ],
+      "id": "09030bbe-1578-4c25-baaa-331b2bb6a6a5",
+      "name": "Microsoft SQL AP",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
+              "name": "ap_id",
+              "value": "={{ $('Webhook').item.json.body.attributes.athleteProfileId }}",
+              "type": "number"
+            },
+            {
+              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
+              "name": "chatInput",
+              "value": "={{ $('Webhook').item.json.body.attributes.message }}",
+              "type": "string"
+            },
+            {
+              "id": "55e638f6-98a9-4489-a3b4-469449f7b0e0",
+              "name": "averageScores",
+              "value": "={{ $json.averageScores }}",
+              "type": "object"
+            },
+            {
+              "id": "663371d9-948a-4390-87bf-91b51a585543",
+              "name": "averageOfLastThree",
+              "value": "={{ $json.averageOfLastThree }}",
+              "type": "object"
+            },
+            {
+              "id": "21680b6d-6790-4c1c-8f49-cc4a633f7962",
+              "name": "mostRecentAssessment",
+              "value": "={{ $json.mostRecentAssessment }}",
+              "type": "object"
+            },
+            {
+              "id": "79d3dcc5-40eb-407c-b2a0-a0d97ee341be",
+              "name": "sessionId",
+              "value": "123456789",
+              "type": "string"
+            },
+            {
+              "id": "a572379c-894f-4e42-9fbf-5ff441b4b0ae",
+              "name": "pdiInfo",
+              "value": "={{ $('Code').item.json.pdiInfo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "4a6cfce4-d393-4a83-bde3-83dce011fa92",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get subsection scores for each assessment the user has taken ordered from the most recent to the least recent.",
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM [dbo].[SubSectionScores]\nWHERE [dbo].[SubSectionScores].surveyResponseId IN (SELECT id FROM [dbo].[SurveyResponse] WHERE athleteProfileId = {{ $('Edit Fields1').item.json.ap_id }})\nORDER by id DESC\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        520
+      ],
+      "id": "fa7532c3-6e09-4ab9-a5b3-a6bd58b35788",
+      "name": "Microsoft SQL Scores",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"output\": {{ JSON.stringify($json.output) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1420,
+        0
+      ],
+      "id": "5460b6c3-4a75-4945-beee-41c14acf0fda",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Returns athlete's name and other personal details.",
+        "operation": "executeQuery",
+        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n      ,[Gender]\n      ,[DateOfBirth]\n      ,[Height]\n      ,[Weight]\n      ,[userId]\n      ,[GolferType]\n      ,[College]\n  FROM [dbo].[AthleteProfile]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        320
+      ],
+      "id": "ac7ca265-a296-44c6-8a8c-5dfc01cfd5f7",
+      "name": "Athlete Details",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Returns a list of all coach guided assessments taken by the user ordered from most recent to least recent.",
+        "operation": "executeQuery",
+        "query": "select top 1 [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummary\nwhere athleteprofileId =  {{ $('Edit Fields1').item.json.ap_id }}\nORDER by id desc"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        720
+      ],
+      "id": "43f9e1a4-2096-4867-999c-556e39b06e81",
+      "name": "Recent Assessment",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get a JSON object containing the athletes average scores for the last three assessments and the athletes overall average scores.\n\n**Explanation of JSON fields**\naverageScores - score averages for all the athlete's assessments\naverageOfLastThree - the average scores of the last three assessments",
+        "workflowId": {
+          "__rl": true,
+          "value": "wtIRa9GuyX1CFh4k",
+          "mode": "list",
+          "cachedResultName": "AssessmentData"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "apId": "1210"
+          },
+          "matchingColumns": [
+            "apId"
+          ],
+          "schema": [
+            {
+              "id": "apId",
+              "displayName": "apId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        520
+      ],
+      "id": "72fd45bc-fd3f-4bde-9ac8-404459dcf53a",
+      "name": "Assessment Averages",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select top 1 [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummary\nwhere athleteprofileId =  {{ $json.body.attributes.athleteProfileId }}\nORDER by id desc"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        100
+      ],
+      "id": "1e466adb-a6dd-4a02-97b5-b51ee2f0197f",
+      "name": "Microsoft SQL",
+      "alwaysOutputData": true,
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "INw3ecDx8rI3TqZW",
+          "mode": "list",
+          "cachedResultName": "My workflow 4"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "apId": "={{JSON.stringify($('Webhook').item.json.body.attributes.athleteProfileId) }}"
+          },
+          "matchingColumns": [
+            "apId"
+          ],
+          "schema": [
+            {
+              "id": "apId",
+              "displayName": "apId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        260,
+        100
+      ],
+      "id": "9750a0db-9b74-43bb-9b05-093ec6fc1c49",
+      "name": "Execute Workflow",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const pdiData = 'Player Development Index = PDI, PDI = Player Development Index, Quantifying Golf Improvement, Beyond Scoring Average, Introducing the revolutionary new tool to discover and track the key factors that contribute to long term success, The Top 6 Reasons Why PDI is a Game Changer for every junior golfer: PDI provides lead factor data that is critical in understanding what to work on in training, With PDI an athlete will accelerate their development and improvement, PDI provides a roadmap on where to focus energy, time, and resources in training and coaching, PDI uncovers the mystery of why an athlete may not be achieving their potential which is invaluable to college coaches in the recruiting process, PDI closes the gap between perceived proficiency or handicap and the reality of skill and ability at any given moment, PDI provides feedback to golf coaches on how effective the training program really is.'\nreturn {\"mostRecentAssessment\": $input.first(),\n       pdiInfo: pdiData};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6f471ebc-034c-4b6a-8e23-213e2bac2973",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fae8116b-de61-40b3-8ddc-0646c4799732",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        100
+      ],
+      "id": "58e2cf87-2fa9-4e10-9256-8c06bc93808c",
+      "name": "Webhook",
+      "webhookId": "fae8116b-de61-40b3-8ddc-0646c4799732"
+    }
+  ],
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL Drills": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Athlete Details": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "11018554-25f4-47f8-bd3a-34f929c3206c",
+  "triggerCount": 1,
+  "tags": [
+    {
+      "createdAt": "2025-07-11T13:17:34.969Z",
+      "updatedAt": "2025-07-11T13:17:34.969Z",
+      "id": "XEjN7fWhDMHdaXaT",
+      "name": "Golf Coach"
+    }
+  ]
+}
