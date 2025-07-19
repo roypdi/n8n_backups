@@ -1,10 +1,10 @@
 {
   "createdAt": "2025-07-11T16:54:02.027Z",
-  "updatedAt": "2025-07-11T20:06:10.000Z",
+  "updatedAt": "2025-07-18T14:31:46.000Z",
   "id": "3x990XOILJPqWJeW",
   "name": "My workflow",
   "active": false,
-  "isArchived": false,
+  "isArchived": true,
   "nodes": [
     {
       "parameters": {
@@ -408,7 +408,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "086c70b9-adf2-423b-bf8f-b58b9bef9f2e",
+  "versionId": "f4e0b72f-ba6c-4c17-bead-d6fbb1d82d47",
   "triggerCount": 0,
   "tags": [
     {
