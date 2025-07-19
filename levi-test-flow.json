@@ -1,38 +1,27 @@
 {
   "createdAt": "2025-07-11T15:36:46.805Z",
-  "updatedAt": "2025-07-17T19:42:28.000Z",
+  "updatedAt": "2025-07-18T20:24:12.000Z",
   "id": "YIAccubJA1g1Zgkt",
   "name": "Levi Test Flow",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Athlete's Question: \n{{ $('Webhook').item.json.body.attributes.message }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Average of Last 3 Assessments:**\n{{ JSON.stringify($json.averageOfLastThree) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Address the athlete by name.\n- Review how they performed in the most recent assessment.\n- Compare it to their last 3 assessments and all-time average.\n- Highlight:\n  - Key improvements or declines\n  - Areas of strength\n  - Areas that need more work\n- Recommend 1–2 drills tailored to their weaknesses.\n- Recommend drills based on the drills from Microsoft SQL Drills node\n- Be clear, friendly, encouraging, and concise.\n\nIf no data is available then:\nIntroduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n",
+        "text": "=Athlete's Question: \n{{ $('Webhook').item.json.body.attributes.message }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Average of Last 3 Assessments:**\n{{ JSON.stringify($json.averageOfLastThree) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Address the athlete by name (name should be retrieved from athlete details).\n- Review how they performed in the most recent assessment.\n- Compare it to their last 3 assessments and all-time average.\n- Highlight:\n  - Key improvements or declines\n  - Areas of strength\n  - Areas that need more work\n- Recommend 1–2 drills tailored to their weaknesses (drills should be retrieved from Microsoft SQL Drills node).\n- Recommend drills based on the drills from Microsoft SQL Drills node\n- Be clear, friendly, encouraging, and concise.\n- Use pincone vector store1 to retrieve relevant data from past conversations with the user.\n- If the user has no past conversation data then it is their first time interacting with you. You must welcome the user, introduce yourself, and give an explaination on PDI and how it can help them improve at golf.\n- If prompted for a practice plan or schedule - Create a 2-week practice plan. Practice plan should include 1-2 drills per golf section per week with a focus on the areas the athlete is weakest in.\n\nPlease send all responses in HTML format, Example:\n\n\"Hi! I'm Petey. Let's get started!\" -> \"<div className=\"group\">\n<p><b>Hi!</b></p>\n<p>I'm Petey. Let's get started! </p>\n</div>\n\nIf no data is available then:\nIntroduce yourself and introduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n",
         "options": {
-          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach. Your role is to analyze a user's golf performance and physical fitness data from their PDI assessments and provide clear, personalized, and actionable coaching.\n\nAs a coach you also have multiple tasks:\n- Introducing new athlete's to PDI (only if they have no assessment data)\n- Provide daily, personalized drills\n- Generate two week improvement plans based on most recent and average PDI assessment results\n- Give athletes detailed breakdown of their most recent assessment\n- Provide personalized coaching feedback and insight based on standard golf knowledge and PDI assessment data\n\n**if a user has no previous assessments**\nIntroduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n**drill recommendation**\nWhen offering customized practice drills and challenges get drills by querying the Microsoft SQL Drills node, aligning recommendations to the user’s needs.\n\n\nAlways address the athlete by name and refer to key stats in your advice. Be professional, supportive, and occasionally humorous to keep the tone light and motivating.\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---\n\n**Your Job:**\n\n- Assign relevant drills daily:\n  - If athlete is looking for something to work on or ways to improve provide 1 drill to focus on for the day that aligns with their weaknesses from their most recent assessment\n\n- Review and compare:\n  - The **latest assessment**\n  - The **average of the last 3 assessments** (refer to as “average of the last 3 assessments”)\n  - The **average of all assessments** (refer to as “average”)\n- Analyze performance trends, highlighting:\n  - Areas of **improvement**\n  - Areas that are still **struggling**\n  - Areas of **consistent strength**\n- Give 1–2 **actionable improvement tips**, and recommend specific **drills** based on weak areas.\n- When referencing any data point, always state whether it's from the latest, 3-assessment average, or all-time average.\n\n---\n\n**Notes:**\n\n- If the athlete hasn't completed a PDI assessment in the last 14 days, encourage them to do so to ensure the coaching stays accurate and helpful.\n- Be concise, actionable, and supportive.\n"
+          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach. Your role is to analyze a user's golf performance and physical fitness data from their PDI assessments and provide clear, personalized, and actionable coaching.\n\nAs a coach you also have multiple tasks:\n- Introducing new athlete's to PDI (only if they have no assessment data)\n- Provide daily, personalized drills\n- Generate two week improvement plans based on most recent and average PDI assessment results\n- Give athletes detailed breakdown of their most recent assessment\n- Provide personalized coaching feedback and insight based on standard golf knowledge and PDI assessment data\n\n**if a user has no previous assessments**\nIntroduce the athlete to PDI. Explain what PDI is, descibe how PDI tracks someone's golf, physical, and mental performance, and clarify that drills are practice tasks and challenges are skill tests. Use info on PDI: {{ $json.pdiInfo }}\n\n**Practice Plan Guidlines**\n- Practice plan should be 2 weeks long\n- Practice plan should include 1-2 drills per golf section with a focus on the sections the user is weakest in\n\n**drill recommendation**\nWhen offering customized practice drills and challenges get drills by querying the Microsoft SQL Drills node, aligning recommendations to the user’s needs.\n\n\nAlways address the athlete by name and refer to key stats in your advice. Be professional, supportive, and occasionally humorous to keep the tone light and motivating.\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---\n\n**Your Job:**\n\n- Assign relevant drills daily:\n  - If athlete is looking for something to work on or ways to improve provide 1 drill to focus on for the day that aligns with their weaknesses from their most recent assessment\n\n- Review and compare:\n  - The **latest assessment**\n  - The **average of the last 3 assessments** (refer to as “average of the last 3 assessments”)\n  - The **average of all assessments** (refer to as “average”)\n- Analyze performance trends, highlighting:\n  - Areas of **improvement**\n  - Areas that are still **struggling**\n  - Areas of **consistent strength**\n- Give 1–2 **actionable improvement tips**, and recommend specific **drills** based on weak areas.\n- When referencing any data point, always state whether it's from the latest, 3-assessment average, or all-time average.\n\n---\n\n**Notes:**\n\n- If the athlete hasn't completed a PDI assessment in the last 14 days, encourage them to do so to ensure the coaching stays accurate and helpful.\n- Be concise, actionable, and supportive.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        920,
-        0
+        980,
+        -140
       ],
       "id": "1653714b-cdcd-4b6c-ad15-93a6b6212b55",
       "name": "AI Agent"
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        800,
-        440
-      ],
-      "id": "f007a044-63b7-4686-8651-861878060044",
-      "name": "Simple Memory"
     },
     {
       "parameters": {
@@ -41,7 +30,7 @@
             {
               "id": "1812719b-d5cb-4269-809b-69bea648a8f1",
               "name": "output",
-              "value": "={{ $json.output }}",
+              "value": "={{ $('AI Agent').item.json.output }}",
               "type": "string"
             }
           ]
@@ -51,8 +40,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1380,
-        0
+        1860,
+        -120
       ],
       "id": "222a1748-be57-47de-ab27-7fff810669de",
       "name": "Edit Fields"
@@ -69,8 +58,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        620,
-        440
+        680,
+        140
       ],
       "id": "5a874f53-3e31-41f9-a5a2-deb8155ac10d",
       "name": "OpenAI Chat Model",
@@ -84,15 +73,15 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "Use to get a list of drills to recommend to the athlete",
+        "toolDescription": "Returns list of drills.",
         "operation": "executeQuery",
         "query": "SELECT cd.* \nFROM assignment a\nLEFT JOIN challengedrill cd ON a.challengeDrillId = cd.id\nWHERE a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }};\n\n"
       },
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        1160,
-        400
+        1140,
+        260
       ],
       "id": "d68f1d05-36a1-429a-ad94-7f8e494aa444",
       "name": "Microsoft SQL Drills",
@@ -111,8 +100,8 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        1760,
-        280
+        2080,
+        660
       ],
       "id": "26c4f8cd-6714-40da-b10e-c3efefe0438a",
       "name": "Microsoft SQL AP",
@@ -155,7 +144,7 @@
             {
               "id": "21680b6d-6790-4c1c-8f49-cc4a633f7962",
               "name": "mostRecentAssessment",
-              "value": "={{ $json.mostRecentAssessment }}",
+              "value": "={{ $('Code').item.json.mostRecentAssessment }}",
               "type": "object"
             },
             {
@@ -177,8 +166,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        380,
-        0
+        460,
+        -80
       ],
       "id": "edecb3ab-73c2-4761-ad5c-d4f52e49d4a7",
       "name": "Edit Fields1"
@@ -193,8 +182,8 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        1760,
-        500
+        2040,
+        400
       ],
       "id": "cd4c7bfa-7528-4398-8e74-265e5e8d23ac",
       "name": "Microsoft SQL Scores",
@@ -216,8 +205,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -840,
-        -200
+        -140,
+        -80
       ],
       "id": "680ede81-1548-470e-85cd-959951da46ac",
       "name": "Webhook",
@@ -232,8 +221,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        1580,
-        0
+        2120,
+        -120
       ],
       "id": "92e3f94c-dd0e-4d97-b6a2-e180852740d0",
       "name": "Respond to Webhook"
@@ -241,15 +230,15 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "Returns athlete's name and other personal details.",
+        "toolDescription": "Returns athlete's name.",
         "operation": "executeQuery",
         "query": "SELECT\n      [FirstName]\n      ,[LastName]\n      ,[Gender]\n      ,[DateOfBirth]\n      ,[Height]\n      ,[Weight]\n      ,[userId]\n      ,[GolferType]\n      ,[College]\n  FROM [dbo].[AthleteProfile]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
       },
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        980,
-        400
+        1000,
+        260
       ],
       "id": "4d68435a-e593-4a2a-acac-9a8c4cc04e04",
       "name": "Athlete Details",
@@ -270,8 +259,8 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        1600,
-        280
+        1900,
+        720
       ],
       "id": "f9fcf6aa-f1fd-4560-8004-f51a3df61b8f",
       "name": "Recent Assessment",
@@ -319,8 +308,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1600,
-        500
+        2220,
+        400
       ],
       "id": "e11ac524-f4b7-4735-8be9-322d6c11fdd8",
       "name": "Assessment Averages",
@@ -334,8 +323,8 @@
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
       "position": [
-        -420,
-        -200
+        20,
+        200
       ],
       "id": "35bf6b38-4bd8-4df2-89c4-019a9b62bddc",
       "name": "Microsoft SQL",
@@ -383,8 +372,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        80,
-        -200
+        320,
+        200
       ],
       "id": "0a11b9d4-8f8c-4195-8c13-92c5c7f35af3",
       "name": "Execute Workflow",
@@ -397,205 +386,76 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -140,
-        -200
+        160,
+        -60
       ],
       "id": "cb0d74f1-ba85-432c-ae5f-a1a23979847d",
       "name": "Code"
     },
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "0a414c93-7e4b-4a27-95d7-e4994b21d1c8",
-        "responseMode": "responseNode",
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "chatmemory",
+          "mode": "list",
+          "cachedResultName": "chatmemory"
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
       "position": [
-        -220,
-        880
+        1480,
+        -120
       ],
-      "id": "267b451c-f05b-4db8-867c-35408ec35229",
-      "name": "Webhook1",
-      "webhookId": "0a414c93-7e4b-4a27-95d7-e4994b21d1c8",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "select top 1 [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummary\nwhere athleteprofileId =  {{ $json.body.attributes.athleteProfileId }}\nORDER by id desc"
-      },
-      "type": "n8n-nodes-base.microsoftSql",
-      "typeVersion": 1.1,
-      "position": [
-        -20,
-        880
-      ],
-      "id": "1216e9db-7b03-4b71-8ad0-679df673c12a",
-      "name": "Microsoft SQL1",
-      "alwaysOutputData": true,
+      "id": "a30d5f8a-0091-4154-a2f1-df1ff9b4d7be",
+      "name": "Pinecone Vector Store",
       "credentials": {
-        "microsoftSql": {
-          "id": "QWx5JdDwbJpAMzMS",
-          "name": "Microsoft SQL account"
+        "pineconeApi": {
+          "id": "Bd0BoZscH4xahUhT",
+          "name": "PineconeApi account"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "\nreturn {\"mostRecentAssessment\": $input.first()};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        160,
-        880
-      ],
-      "id": "5fe9ed74-15c0-4fd7-9c71-b1fb5699593e",
-      "name": "Code1"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "wtIRa9GuyX1CFh4k",
-          "mode": "list",
-          "cachedResultName": "AssessmentData"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "apId": "={{JSON.stringify($('Webhook1').item.json.body.attributes.athleteProfileId)}}"
-          },
-          "matchingColumns": [
-            "apId"
-          ],
-          "schema": [
-            {
-              "id": "apId",
-              "displayName": "apId",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.2,
-      "position": [
-        340,
-        880
-      ],
-      "id": "aba89be7-2ede-41c6-b6eb-56a03a8347cd",
-      "name": "Execute Workflow1",
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "6d982a37-5d6e-4635-8f53-3b8a1997ca17",
-              "name": "ap_id",
-              "value": "={{ $('Webhook1').item.json.body.attributes.athleteProfileId }}",
-              "type": "number"
-            },
-            {
-              "id": "21f7860b-e755-4319-8085-9f7593e857fa",
-              "name": "chatInput",
-              "value": "={{ $('Webhook1').item.json.body.attributes.message }}",
-              "type": "string"
-            },
-            {
-              "id": "55e638f6-98a9-4489-a3b4-469449f7b0e0",
-              "name": "averageScores",
-              "value": "={{ $json.averageScores }}",
-              "type": "object"
-            },
-            {
-              "id": "663371d9-948a-4390-87bf-91b51a585543",
-              "name": "averageOfLastThree",
-              "value": "={{ $json.averageOfLastThree }}",
-              "type": "object"
-            },
-            {
-              "id": "21680b6d-6790-4c1c-8f49-cc4a633f7962",
-              "name": "mostRecentAssessment",
-              "value": "={{ $('Code1').item.json.mostRecentAssessment.json }}",
-              "type": "object"
-            },
-            {
-              "id": "79d3dcc5-40eb-407c-b2a0-a0d97ee341be",
-              "name": "sessionId",
-              "value": "123456789",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        520,
-        880
-      ],
-      "id": "371ae671-2069-4095-a515-5d7b75de3a1e",
-      "name": "Edit Fields2"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Athlete's Question: \n{{ $('Webhook1').item.json.body.attributes.message }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Average of Last 3 Assessments:**\n{{ JSON.stringify($json.averageOfLastThree) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Address the athlete by name.\n- Review how they performed in the most recent assessment.\n- Compare it to their last 3 assessments and all-time average.\n- Highlight:\n  - Key improvements or declines\n  - Areas of strength\n  - Areas that need more work\n- Create a 2-week practice plan. Practice plan should include 1-2 drills per golf section per week with a focus on the areas the athlete is weakest in.\n- Recommend drills based on the drills from Microsoft SQL Drills node.\n- Be clear, friendly, encouraging, and concise.",
+        "jsonMode": "expressionData",
+        "jsonData": "=input:  {{ $('Webhook').item.json.body.attributes.message }}\noutput: {{ $('AI Agent').item.json.output }}",
         "options": {
-          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach. Your role is to analyze a user's golf performance and physical fitness data from their PDI assessments and provide clear, personalized, and actionable practice plans to athletes.\n\n**Practice Plan Guidlines**\n- Practice plan should be 2 weeks long\n- Practice plan should include 1-2 drills per golf section with a focus on the sections the user is weakest in\n\n**drill recommendation guidlines**\nWhen offering customized practice drills and challenges get drills by querying the Microsoft SQL Drills node, aligning recommendations to the user’s weaknesses.\n\n\nAlways address the athlete by name and refer to key stats in your advice. Be professional, supportive, and occasionally humorous to keep the tone light and motivating.\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---\n\n**Your Job:**\n\n- Assign relevant drills daily:\n  - If athlete is looking for something to work on or ways to improve provide 1 drill to focus on for the day that aligns with their weaknesses from their most recent assessment\n\n- Review and compare:\n  - The **latest assessment**\n  - The **average of the last 3 assessments** (refer to as “average of the last 3 assessments”)\n  - The **average of all assessments** (refer to as “average”)\n- Analyze performance trends, highlighting:\n  - Areas of **improvement**\n  - Areas that are still **struggling**\n  - Areas of **consistent strength**\n- Give the athlete a two week practice plan designed to help them improve their golf score the most\n---\n\n**Notes:**\n\n- If the athlete hasn't completed a PDI assessment in the last 14 days, encourage them to do so to ensure the coaching stays accurate and helpful.\n- Be concise, actionable, and supportive.\n"
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "athleteprofileId",
+                "value": "={{ $('Webhook').item.json.body.attributes.athleteProfileId }}"
+              }
+            ]
+          }
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2,
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
       "position": [
-        740,
-        880
+        1740,
+        100
       ],
-      "id": "f75bc95a-6f19-41af-80f6-e2131241c315",
-      "name": "AI Agent1"
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        760,
-        1160
-      ],
-      "id": "5e15bd3f-e38b-4171-a7b5-9682e5b08752",
-      "name": "Simple Memory1"
+      "id": "49d23d94-e184-47fa-8814-884dc8e45cf9",
+      "name": "Default Data Loader"
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "options": {}
+        "options": {
+          "dimensions": 512
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        580,
-        1160
+        1540,
+        280
       ],
-      "id": "ca855911-79cb-4ae4-bc7a-1042a3c8e48c",
-      "name": "OpenAI Chat Model1",
+      "id": "c76d9194-b44c-4ea8-adad-1e9efed1e64d",
+      "name": "Embeddings OpenAI",
       "credentials": {
         "openAiApi": {
           "id": "I8AkDrdcTfhJdWQC",
@@ -604,111 +464,60 @@
       }
     },
     {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Returns athlete's name and other personal details.",
-        "operation": "executeQuery",
-        "query": "SELECT\n      [FirstName]\n      ,[LastName]\n      ,[Gender]\n      ,[DateOfBirth]\n      ,[Height]\n      ,[Weight]\n      ,[userId]\n      ,[GolferType]\n      ,[College]\n  FROM [dbo].[AthleteProfile]\nWHERE [dbo].[AthleteProfile].[id] = {{ $('Edit Fields1').item.json.ap_id }}"
-      },
-      "type": "n8n-nodes-base.microsoftSqlTool",
-      "typeVersion": 1.1,
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
       "position": [
-        1020,
-        1160
+        820,
+        260
       ],
-      "id": "e7c476a9-0143-4044-9c7c-9993409d86e3",
-      "name": "Athlete Details1",
-      "credentials": {
-        "microsoftSql": {
-          "id": "QWx5JdDwbJpAMzMS",
-          "name": "Microsoft SQL account"
-        }
-      }
+      "id": "2961c401-a674-49d0-b070-85e14f2071a3",
+      "name": "Simple Memory"
     },
     {
       "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Use to get a list of drills to recommend to the athlete",
-        "operation": "executeQuery",
-        "query": "SELECT \n[dbo].[ChallengeDrill].[DrillName]\n      ,[ScoreMin]\n      ,[ScoreMax]\n      ,[IsScoreInPercentage]\n      ,[ChallengeDrillId]\n\n      ,[section]\n      ,[groupName]\n      ,[level]\n      ,[type]\n      ,[rules]\n      ,[goal]\n      ,[setup]\n      ,[specialRules]\n      ,[specialGoals]\n      ,[specialSetup]\n      ,[max]\n      ,[completionRequirement]\n      ,[image]\n      ,[video]\n      ,[createdAt]\n      ,[modifiedAt]\n      ,[reps]\n\n      ,[isCheckpoint]\n  FROM [dbo].[ChallengeDrillScoreMapping]\n  INNER JOIN [dbo].[ChallengeDrill] ON [dbo].[ChallengeDrillScoreMapping].ChallengeDrillId = [dbo].[ChallengeDrill].id\n"
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use this tool to recall relevant information from previous chats with the user. It helps when continuity or past discussions are important. Provide a question or topic to search for related chat history.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "chatmemory",
+          "mode": "list",
+          "cachedResultName": "chatmemory"
+        },
+        "topK": 10,
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "athleteprofileId",
+                "value": "={{ $('Webhook').item.json.body.attributes.athleteProfileId }}"
+              }
+            ]
+          }
+        }
       },
-      "type": "n8n-nodes-base.microsoftSqlTool",
-      "typeVersion": 1.1,
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
       "position": [
         1240,
-        1160
+        100
       ],
-      "id": "f8ba3ce6-4f04-4202-842c-8375dd1e9650",
-      "name": "Microsoft SQL Drills1",
+      "id": "edeaf124-f8e2-437f-ad6a-8c99776b9f6d",
+      "name": "Pinecone Vector Store1",
       "credentials": {
-        "microsoftSql": {
-          "id": "QWx5JdDwbJpAMzMS",
-          "name": "Microsoft SQL account"
+        "pineconeApi": {
+          "id": "Bd0BoZscH4xahUhT",
+          "name": "PineconeApi account"
         }
       }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "ce1be9a0-3a2b-4b21-a988-52028cb62a70",
-              "name": "output",
-              "value": "",
-              "type": "string"
-            },
-            {
-              "id": "e97c3a54-d570-4467-91f7-2be8fa3b74b2",
-              "name": "output",
-              "value": "={{ $json.output }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1160,
-        880
-      ],
-      "id": "5386f49f-9b27-44ea-b377-0f161e76e145",
-      "name": "Edit Fields3"
-    },
-    {
-      "parameters": {
-        "respondWith": "text",
-        "responseBody": "={\n  \"output\": {{ $json.output }}\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.4,
-      "position": [
-        1440,
-        880
-      ],
-      "id": "09c7c061-fafc-4b93-9fde-b6120d3de367",
-      "name": "Respond to Webhook1"
     }
   ],
   "connections": {
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "AI Agent": {
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Pinecone Vector Store",
             "type": "main",
             "index": 0
           }
@@ -834,122 +643,61 @@
         ]
       ]
     },
-    "Webhook1": {
+    "Pinecone Vector Store": {
       "main": [
         [
           {
-            "node": "Microsoft SQL1",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Microsoft SQL1": {
-      "main": [
+    "Default Data Loader": {
+      "ai_document": [
         [
           {
-            "node": "Code1",
-            "type": "main",
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
             "index": 0
           }
         ]
       ]
     },
-    "Code1": {
-      "main": [
+    "Embeddings OpenAI": {
+      "ai_embedding": [
         [
           {
-            "node": "Execute Workflow1",
-            "type": "main",
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
             "index": 0
           }
         ]
       ]
     },
-    "Execute Workflow1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory1": {
+    "Simple Memory": {
       "ai_memory": [
         [
           {
-            "node": "AI Agent1",
+            "node": "AI Agent",
             "type": "ai_memory",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Athlete Details1": {
+    "Pinecone Vector Store1": {
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "AI Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Microsoft SQL Drills1": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields3": {
-      "main": [
-        [
-          {
-            "node": "Respond to Webhook1",
-            "type": "main",
             "index": 0
           }
         ]
@@ -964,8 +712,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "8749268c-af64-4be4-a0bd-b37ea88f0697",
-  "triggerCount": 1,
+  "versionId": "0f7e39ab-a2de-4089-82aa-c6c3ab227aca",
+  "triggerCount": 2,
   "tags": [
     {
       "createdAt": "2025-07-11T13:17:34.969Z",
