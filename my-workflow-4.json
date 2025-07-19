@@ -1,0 +1,97 @@
+{
+  "createdAt": "2025-07-18T14:40:30.490Z",
+  "updatedAt": "2025-07-18T14:40:30.490Z",
+  "id": "INw3ecDx8rI3TqZW",
+  "name": "My workflow 4",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummary\nwhere athleteprofileId =  {{ $json.apId }}\nORDER by id desc"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        0
+      ],
+      "id": "4a273edd-38af-44d0-af87-9bbca5fdc5d7",
+      "name": "Microsoft SQL",
+      "credentials": {
+        "microsoftSql": {
+          "id": "J0XbW8fxJTWDqid1",
+          "name": "Microsoft SQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// let averageOfLastThree = {};\n// let averageScores = {}\n\n// for (const item of $input.all()) {\n//   item.json.myNewField = 1;\n// }\n\n// return {\"assessments\": $input.all(),\n//        \"mostRecentAssessment\": $input.first()\n//        };\n\n// Extract all assessments\nconst assessments = $input.all().map(item => item.json);\n\n// Fields you want to calculate averages for\nconst fieldsToAverage = [\n  \"PdiWithScoringAvg\",\n  \"Putt3ft\",\n  \"Putt10ft\",\n  \"Putt30ft\",\n  \"Chip3yd\",\n  \"Chip10yd\",\n  \"Chip20yd\",\n  \"Driver\",\n  \"SixIronBFC\",\n  \"BroadJump\",\n  \"ASLRLeft\",\n  \"ASLRRight\",\n  \"DeepSquat\",\n  \"SupineBridgeLeft\",\n  \"SupineBridgeRight\",\n  \"ScoringAverage\"\n];\n\n// Helper function to calculate averages for a set of assessments\nfunction calculateAverages(data) {\n  const sums = {};\n  const averages = {};\n\n  fieldsToAverage.forEach(field => {\n    sums[field] = 0;\n  });\n\n  data.forEach(assessment => {\n    fieldsToAverage.forEach(field => {\n      if (typeof assessment[field] === 'number') {\n        sums[field] += assessment[field];\n      }\n    });\n  });\n\n  fieldsToAverage.forEach(field => {\n    averages[field] = +(sums[field] / data.length).toFixed(2);\n  });\n\n  return averages;\n}\n\n// Get the most recent and last 3 assessments\nconst mostRecentAssessment = assessments[0];\nconst lastThree = assessments.slice(0, 3);\n\n// Calculate averages\nconst averageScores = calculateAverages(assessments);\nconst averageOfLastThree = calculateAverages(lastThree);\n\n// Return the final result\nreturn {\n  //assessments,\n  //mostRecentAssessment,\n  averageScores,\n  averageOfLastThree\n};\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        620,
+        0
+      ],
+      "id": "4e2bc91a-a83f-4b81-9b89-1c56df07b81c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "apId"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5ac29afc-aab2-45ee-8e67-514c46f9eb7b",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "connections": {
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "ad6caa47-c841-4b40-ad1c-3d7a460a7631",
+  "triggerCount": 0,
+  "tags": []
+}
