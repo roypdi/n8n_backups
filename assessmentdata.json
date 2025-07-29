@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-14T14:35:24.950Z",
-  "updatedAt": "2025-07-17T18:45:52.000Z",
+  "updatedAt": "2025-07-28T15:06:13.000Z",
   "id": "wtIRa9GuyX1CFh4k",
   "name": "AssessmentData",
   "active": false,
@@ -9,7 +9,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "select [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummary\nwhere athleteprofileId =  {{ $json.apId }}\nORDER by id desc"
+        "query": "SELECT \n  'summary' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummary\nWHERE athleteProfileId = 1210\n\nUNION ALL\n\nSELECT \n  'self' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummarySelf\nWHERE athleteProfileId = 1210\n\nORDER BY createdAt DESC;\n"
       },
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
@@ -28,7 +28,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// let averageOfLastThree = {};\n// let averageScores = {}\n\n// for (const item of $input.all()) {\n//   item.json.myNewField = 1;\n// }\n\n// return {\"assessments\": $input.all(),\n//        \"mostRecentAssessment\": $input.first()\n//        };\n\n// Extract all assessments\nconst assessments = $input.all().map(item => item.json);\n\n// Fields you want to calculate averages for\nconst fieldsToAverage = [\n  \"PdiWithScoringAvg\",\n  \"Putt3ft\",\n  \"Putt10ft\",\n  \"Putt30ft\",\n  \"Chip3yd\",\n  \"Chip10yd\",\n  \"Chip20yd\",\n  \"Driver\",\n  \"SixIronBFC\",\n  \"BroadJump\",\n  \"ASLRLeft\",\n  \"ASLRRight\",\n  \"DeepSquat\",\n  \"SupineBridgeLeft\",\n  \"SupineBridgeRight\",\n  \"ScoringAverage\"\n];\n\n// Helper function to calculate averages for a set of assessments\nfunction calculateAverages(data) {\n  const sums = {};\n  const averages = {};\n\n  fieldsToAverage.forEach(field => {\n    sums[field] = 0;\n  });\n\n  data.forEach(assessment => {\n    fieldsToAverage.forEach(field => {\n      if (typeof assessment[field] === 'number') {\n        sums[field] += assessment[field];\n      }\n    });\n  });\n\n  fieldsToAverage.forEach(field => {\n    averages[field] = +(sums[field] / data.length).toFixed(2);\n  });\n\n  return averages;\n}\n\n// Get the most recent and last 3 assessments\nconst mostRecentAssessment = assessments[0];\nconst lastThree = assessments.slice(0, 3);\n\n// Calculate averages\nconst averageScores = calculateAverages(assessments);\nconst averageOfLastThree = calculateAverages(lastThree);\n\n// Return the final result\nreturn {\n  //assessments,\n  //mostRecentAssessment,\n  averageScores,\n  averageOfLastThree\n};\n\n"
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// let averageOfLastThree = {};\n// let averageScores = {}\n\n// for (const item of $input.all()) {\n//   item.json.myNewField = 1;\n// }\n\n// return {\"assessments\": $input.all(),\n//        \"mostRecentAssessment\": $input.first()\n//        };\n\n// Extract all assessments\nconst assessments = $input.all().map(item => item.json);\n\n// Fields you want to calculate averages for\nconst fieldsToAverage = [\n  \"PdiWithScoringAvg\",\n  \"Putt3ft\",\n  \"Putt10ft\",\n  \"Putt30ft\",\n  \"Chip3yd\",\n  \"Chip10yd\",\n  \"Chip20yd\",\n  \"Driver\",\n  \"SixIronBFC\",\n  \"BroadJump\",\n  \"ASLRLeft\",\n  \"ASLRRight\",\n  \"DeepSquat\",\n  \"SupineBridgeLeft\",\n  \"SupineBridgeRight\",\n  \"ScoringAverage\"\n];\n\n// Helper function to calculate averages for a set of assessments\nfunction calculateAverages(data) {\n  const sums = {};\n  const averages = {};\n\n  fieldsToAverage.forEach(field => {\n    sums[field] = 0;\n  });\n\n  data.forEach(assessment => {\n    fieldsToAverage.forEach(field => {\n      if (typeof assessment[field] === 'number') {\n        sums[field] += assessment[field];\n      }\n    });\n  });\n\n  fieldsToAverage.forEach(field => {\n    averages[field] = +(sums[field] / data.length).toFixed(2);\n  });\n\n  return averages;\n}\n\n// Get the most recent and last 3 assessment\nconst lastThree = assessments.slice(0, 3);\n\n// Calculate averages\nconst averageScores = calculateAverages(assessments);\nconst averageOfLastThree = calculateAverages(lastThree);\n\n// Return the final result\nreturn {\n  //assessments,\n  //mostRecentAssessment,\n  averageScores,\n  averageOfLastThree\n};\n\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -91,7 +91,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4bb102ba-07a0-4d44-ae9b-795c39230b5a",
+  "versionId": "afedda5a-46a4-482b-985e-b077e6642740",
   "triggerCount": 0,
   "tags": []
 }
