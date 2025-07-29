@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-11T15:36:46.805Z",
-  "updatedAt": "2025-07-25T20:14:03.000Z",
+  "updatedAt": "2025-07-28T20:17:47.000Z",
   "id": "YIAccubJA1g1Zgkt",
   "name": "Levi Test Flow",
   "active": true,
@@ -40,8 +40,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2240,
-        -140
+        1880,
+        -120
       ],
       "id": "222a1748-be57-47de-ab27-7fff810669de",
       "name": "Edit Fields"
@@ -58,8 +58,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1580,
-        440
+        1520,
+        100
       ],
       "id": "5a874f53-3e31-41f9-a5a2-deb8155ac10d",
       "name": "OpenAI Chat Model",
@@ -80,7 +80,7 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        2020,
+        2280,
         260
       ],
       "id": "d68f1d05-36a1-429a-ad94-7f8e494aa444",
@@ -160,8 +160,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1200,
-        120
+        1300,
+        -120
       ],
       "id": "edecb3ab-73c2-4761-ad5c-d4f52e49d4a7",
       "name": "Edit Fields1"
@@ -199,8 +199,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -540,
-        120
+        -640,
+        -120
       ],
       "id": "680ede81-1548-470e-85cd-959951da46ac",
       "name": "Webhook",
@@ -215,8 +215,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.4,
       "position": [
-        2500,
-        -140
+        2060,
+        -120
       ],
       "id": "92e3f94c-dd0e-4d97-b6a2-e180852740d0",
       "name": "Respond to Webhook"
@@ -231,7 +231,7 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        2180,
+        2420,
         260
       ],
       "id": "4d68435a-e593-4a2a-acac-9a8c4cc04e04",
@@ -317,8 +317,8 @@
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
       "position": [
-        140,
-        300
+        300,
+        100
       ],
       "id": "35bf6b38-4bd8-4df2-89c4-019a9b62bddc",
       "name": "Microsoft SQL",
@@ -366,8 +366,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        960,
-        120
+        1100,
+        -120
       ],
       "id": "0a11b9d4-8f8c-4195-8c13-92c5c7f35af3",
       "name": "Execute Workflow",
@@ -380,8 +380,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        740,
-        120
+        880,
+        -120
       ],
       "id": "cb0d74f1-ba85-432c-ae5f-a1a23979847d",
       "name": "Code"
@@ -462,8 +462,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1660,
-        200
+        1520,
+        260
       ],
       "id": "2961c401-a674-49d0-b070-85e14f2071a3",
       "name": "Simple Memory"
@@ -514,8 +514,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -340,
-        120
+        -400,
+        -120
       ],
       "id": "34fb83b2-3ba2-4f30-87fd-556b61a40bf9",
       "name": "Switch"
@@ -528,8 +528,8 @@
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
       "position": [
-        200,
-        -120
+        300,
+        -300
       ],
       "id": "9c4684bb-2095-4291-8ccf-510382c239c7",
       "name": "Microsoft SQL1",
@@ -569,7 +569,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        1860,
+        2140,
         260
       ],
       "id": "1825bcc3-996d-48a3-9e56-a0ed722770b2",
@@ -577,42 +577,119 @@
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
+        "mode": "expression",
+        "numberOutputs": 2,
+        "output": "={{$json.body.attributes.assessmentType === 'self'}}"
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -100,
+        -140
+      ],
+      "id": "0b86d512-f13b-4c22-ae3a-a86ccaf3879a",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select top 1 [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nfrom assessmentSummarySelf\nwhere athleteprofileId =  {{ $json.body.attributes.athleteProfileId }} and id = {{ $json.body.attributes.assessmentId }}\nORDER by id desc"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        -120
+      ],
+      "id": "aca8e8e6-cb78-4612-a29f-212829ea0090",
+      "name": "Microsoft SQL2",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO ChatHistory (input, response, createdAt, userId)\nVALUES (\n  '{{ $('Webhook').item.json.body.attributes.message }}',\n  '{{ $json.output }},\n  {{ new Date().toISOString() }},\n  (\n    SELECT userId\n    FROM AthleteProfile\n    WHERE id = {{ $('Webhook').item.json.body.attributes.athleteProfileId }}\n  )\n);\n\n\n"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        2580,
+        -100
+      ],
+      "id": "e9ffaf23-64eb-4f90-b579-38bd06b8582f",
+      "name": "Microsoft SQL4",
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pdibackenddev.azurewebsites.net/api/user/chat-history",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "1ee707c9-2853-47c7-9dbc-e77edb211e35"
-                  }
-                ],
-                "combinator": "and"
-              }
+              "name": "UNIQUE_KEY",
+              "value": "0B4887D3-211F-41D4-A7B4-9906AF0CABE4"
+            },
+            {
+              "name": "athleteProfileId",
+              "value": "={{ $('Webhook').item.json.body.attributes.athleteProfileId }}"
+            },
+            {
+              "name": "input",
+              "value": "={{ $('Webhook').item.json.body.attributes.message }}"
+            },
+            {
+              "name": "response",
+              "value": "={{ $json.output.replace(/<[^>]+>/g, '') }}"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -120,
-        20
+        2220,
+        -120
       ],
-      "id": "0b86d512-f13b-4c22-ae3a-a86ccaf3879a",
-      "name": "Switch1"
+      "id": "1fcc0798-3d9a-4079-b014-39d30c6c7bf6",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get previous chat history from Microsoft SQL Database",
+        "operation": "executeQuery",
+        "query": "select TOP 10 * from ChatHistory\nwhere userId = (\n    SELECT userId\n    FROM AthleteProfile\n    WHERE id = 1210\n  )"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        260
+      ],
+      "id": "a27e8fd7-3a17-496e-ba87-450a3612300b",
+      "name": "Chat History",
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      }
     }
   ],
   "connections": {
@@ -780,13 +857,7 @@
     },
     "Simple Memory": {
       "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Pinecone Vector Store1": {
@@ -842,6 +913,46 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Microsoft SQL2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat History": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
         ]
       ]
     }
@@ -854,7 +965,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "64b66014-3f7a-4a14-85d6-95bb06273597",
+  "versionId": "72fb20e1-4e50-4fd1-b6aa-a77d044d3723",
   "triggerCount": 1,
   "tags": [
     {
