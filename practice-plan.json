@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-17T16:20:55.205Z",
-  "updatedAt": "2025-07-17T19:38:44.000Z",
+  "updatedAt": "2025-07-31T18:29:55.000Z",
   "id": "uNIcFm36mkqWoZiU",
   "name": "practice-plan",
   "active": false,
@@ -11,8 +11,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        2900,
-        1260
+        2920,
+        1460
       ],
       "id": "6ea313e5-e547-4130-bdc3-7035a1c59ab4",
       "name": "Simple Memory2"
@@ -51,33 +51,11 @@
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
       "position": [
-        3160,
-        1260
+        3060,
+        1460
       ],
       "id": "d6fe9525-0966-4a31-86ac-453352fdde34",
       "name": "Athlete Details2",
-      "credentials": {
-        "microsoftSql": {
-          "id": "QWx5JdDwbJpAMzMS",
-          "name": "Microsoft SQL account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Use to get a list of drills to recommend to the athlete",
-        "operation": "executeQuery",
-        "query": "SELECT cd.* \nFROM assignment a\nLEFT JOIN challengedrill cd ON a.challengeDrillId = cd.id\nWHERE a.athleteProfileId = {{ $('Edit Fields4').item.json.ap_id }};\n"
-      },
-      "type": "n8n-nodes-base.microsoftSqlTool",
-      "typeVersion": 1.1,
-      "position": [
-        3380,
-        1260
-      ],
-      "id": "9a6a6004-5e7d-4a17-9534-b0b7e7e57e2f",
-      "name": "Microsoft SQL Drills2",
       "credentials": {
         "microsoftSql": {
           "id": "QWx5JdDwbJpAMzMS",
@@ -93,8 +71,8 @@
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
       "position": [
-        2020,
-        1240
+        1600,
+        1620
       ],
       "id": "01b07dd6-1b83-4c78-8ce6-9efac1ad51b8",
       "name": "Microsoft SQL2",
@@ -113,7 +91,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2180,
+        2300,
         980
       ],
       "id": "735bed2d-0b5b-408b-a077-42edd31bad15",
@@ -155,8 +133,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        2320,
-        1240
+        2480,
+        980
       ],
       "id": "b8096074-74b5-4014-8377-11c01c4ef1cb",
       "name": "Execute Workflow2",
@@ -185,12 +163,6 @@
               "type": "object"
             },
             {
-              "id": "663371d9-948a-4390-87bf-91b51a585543",
-              "name": "averageOfLastThree",
-              "value": "={{ $('Execute Workflow2').item.json.averageOfLastThree }}",
-              "type": "object"
-            },
-            {
               "id": "21680b6d-6790-4c1c-8f49-cc4a633f7962",
               "name": "mostRecentAssessment",
               "value": "={{ $('Code2').item.json.mostRecentAssessment.json }}",
@@ -199,7 +171,7 @@
             {
               "id": "79d3dcc5-40eb-407c-b2a0-a0d97ee341be",
               "name": "sessionId",
-              "value": "123456789",
+              "value": "999999999999",
               "type": "string"
             }
           ]
@@ -218,9 +190,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Athlete's Question: {{ $json.chatInput }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Average of Last 3 Assessments:**\n{{ JSON.stringify($json.averageOfLastThree) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Address the athlete by name.\n- Review how they performed in the most recent assessment.\n- Compare it to their last 3 assessments and all-time average.\n- Highlight:\n  - Key improvements or declines\n  - Areas of strength\n  - Areas that need more work\n- Create a 2-week practice plan. Practice plan should include 1-2 drills per golf section per week with a focus on the areas the athlete is weakest in.\n- Recommend drills based on the drills from Microsoft SQL Drills node.\n- Be clear, friendly, encouraging, and concise.",
+        "text": "=Athlete's Question: {{ $json.chatInput }}\n\n---\n\n**Most Recent Assessment:**\n{{ JSON.stringify($json.mostRecentAssessment) }}\n\n**Overall Average Scores:**\n{{ JSON.stringify($json.averageScores) }}\n\n---\n\nPlease analyze the data above. Then:\n- Review how they performed in the most recent assessment.\n- Compare to all-time average.\n- Highlight:\n  - Key declines\n  - Areas that need more work\n- Create a practice plan based on the users input\n- Recommend drills based on the Drills node.\n- Recommend challenges based on the Challenges node.\n- Display the drill and challenge id's next to each drill and challenge in your response",
         "options": {
-          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach. Your role is to analyze a user's golf performance and physical fitness data from their PDI assessments and provide clear, personalized, and actionable practice plans to athletes.\n\n**Practice Plan Guidlines**\n- Practice plan should be 2 weeks long\n- Practice plan should include 1-2 drills per golf section with a focus on the sections the user is weakest in\n\n**drill recommendation guidlines**\nWhen offering customized practice drills and challenges get drills by querying the Microsoft SQL Drills node, aligning recommendations to the user’s weaknesses.\n\n\nAlways address the athlete by name and refer to key stats in your advice. Be professional, supportive, and occasionally humorous to keep the tone light and motivating.\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---\n\n**Your Job:**\n\n- Assign relevant drills daily:\n  - If athlete is looking for something to work on or ways to improve provide 1 drill to focus on for the day that aligns with their weaknesses from their most recent assessment\n\n- Review and compare:\n  - The **latest assessment**\n  - The **average of the last 3 assessments** (refer to as “average of the last 3 assessments”)\n  - The **average of all assessments** (refer to as “average”)\n- Analyze performance trends, highlighting:\n  - Areas of **improvement**\n  - Areas that are still **struggling**\n  - Areas of **consistent strength**\n- Give the athlete a two week practice plan designed to help them improve their golf score the most\n---\n\n**Notes:**\n\n- If the athlete hasn't completed a PDI assessment in the last 14 days, encourage them to do so to ensure the coaching stays accurate and helpful.\n- Be concise, actionable, and supportive.\n"
+          "systemMessage": "=You are Coach Petey PDI, a seasoned and encouraging AI golf coach for PDI. PDI is a golf training and improvement tool designed to help athletes assess and improve their Physical, Golf, and Mental abilities through structured assessments and targeted drills. Users take comprehensive assessments and receive scores across various skill domains. Based on these scores, your role is to create clear, personalized, and actionable practice plans to athletes.\n\n**Two Week Practice Plan Guidlines**\n- Practice plan consists of one key focus area (This focus should always be a golf skill). This area should be the users weakest golf skill. You need to assign two drills for this focus area (i.e. if their weakest skill is chipping assign 2 chipping drills, if it is putting assign 2 putting drills...),\n- Practice plan consists of one golf sub-focus area. This area should be the users next weakest golf skill. You need to assign 1 drill for this sub-focus area.\n-Practice plan consists of one physical focus area. This area should be the users weakest physical skill. You need to assign 1 drill for this physical focis area.\n- Practice plan must consist of two challenges that focus on the users key focus area (i.e. if the key focus area is chipping assign 2 chipping challenges).\n- The practice plan should be structured like so:\n  - week 1: key focus drill 1, golf sub-focus drill, key focus challenege 1\n  - week 2: key focus drill 2, physical sub-focus drill, key focus challenege 2\n\n**drill recommendation guidlines**\nWhen offering customized practice drills get drills by querying the Drills node, aligning recommendations to the user’s weaknesses.\n\n**challenge recommendation guidlines**\nWhen offering customized practice challenges get challenges by querying the Drills node, aligning recommendations to the user’s weaknesses.\n\n**storing the practice plan**\n- After creating the practice plan call the generate plan http request tool (this will save the plkan for future refernece)\n- In the http request you will need to pass the athleteprofileId along with all the ID's of the drills and challenges\n\n---\n\n**What You Will Receive:**\n\nYou will be provided with athlete data from PDI Assessments. Each assessment contains three sections:\n\n1. **Physical Ability**\n2. **Golf Ability**\n   - 3ft Putt (4 attempts)\n   - 10ft Putt (4 attempts)\n   - 30ft Putt (4 attempts)\n   - 3yd Chip (4 attempts)\n   - 10yd Chip (4 attempts)\n   - 20yd Chip (4 attempts)\n   - Driver (6 attempts)\n   - Six Iron Ball Flight Control (9 attempts, with 4 sub-metrics per shot: curve, carry, height, distance)\n3. **Mental Ability**\n\n---"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -286,24 +258,136 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        1880,
+        1920,
         980
       ],
       "id": "c0b4c72f-9803-4181-8a99-d3ce0ee4f9e6",
       "name": "Webhook",
       "webhookId": "aa8d6fce-7047-451a-8bdc-6a96ce791afd"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use to get a list of challenges to recommend to the athlete",
+        "operation": "executeQuery",
+        "query": "SELECT cd.id, cd.section, cd.groupName, cd.level, cd.rules, cd.goal, cd.setup, cd.drillName\nFROM challengedrill cd\nLEFT JOIN assignment a \n    ON cd.id = a.challengeDrillId \n    AND a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }}\nWHERE a.challengeDrillId IS NULL\n  AND cd.section NOT IN (\n      'Stress Management', \n      'Target Focus', \n      'Identity/Mindset', \n      'Goal Setting', \n      'Emotional Control', \n      'Self Awareness'\n  )\nAND cd.type != 0;"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        3120,
+        1260
+      ],
+      "id": "901bc787-c355-42b8-b35a-bcc0891e0c75",
+      "name": "Challenges",
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use to get a list of drills to recommend to the athlete",
+        "operation": "executeQuery",
+        "query": "SELECT cd.id, cd.section, cd.groupName, cd.level, cd.rules, cd.goal, cd.setup, cd.drillName\nFROM challengedrill cd\nWHERE cd.drillName NOT IN (\n    SELECT cd2.drillName\n    FROM challengedrill cd2\n    INNER JOIN assignment a ON cd2.id = a.challengeDrillId\n    WHERE a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }}\n)\nAND cd.section NOT IN (\n    'Stress Management', \n    'Target Focus', \n    'Identity/Mindset', \n    'Goal Setting', \n    'Emotional Control', \n    'Self Awareness'\n)\nAND cd.type = 0;\n"
+      },
+      "type": "n8n-nodes-base.microsoftSqlTool",
+      "typeVersion": 1.1,
+      "position": [
+        3260,
+        1260
+      ],
+      "id": "9a6a6004-5e7d-4a17-9534-b0b7e7e57e2f",
+      "name": "Drills",
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT TOP 1 *\nFROM (\n    SELECT \n        [createdAt],\n        [modifiedAt],\n        [PdiWithScoringAvg],\n        [Putt3ft],\n        [Putt10ft],\n        [Putt30ft],\n        [Chip3yd],\n        [Chip10yd],\n        [Chip20yd],\n        [Driver],\n        [SixIronBFC],\n        [BroadJump],\n        [ASLRLeft],\n        [ASLRRight],\n        [DeepSquat],\n        [SupineBridgeLeft],\n        [SupineBridgeRight],\n        [ScoringAverage],\n        'assessmentSummary' AS source\n    FROM assessmentSummary\n    WHERE athleteProfileId = {{ $json.body.attributes.athleteProfileId }}\n\n    UNION ALL\n\n    SELECT \n        [createdAt],\n        [modifiedAt],\n        [PdiWithScoringAvg],\n        [Putt3ft],\n        [Putt10ft],\n        [Putt30ft],\n        [Chip3yd],\n        [Chip10yd],\n        [Chip20yd],\n        [Driver],\n        [SixIronBFC],\n        [BroadJump],\n        [ASLRLeft],\n        [ASLRRight],\n        [DeepSquat],\n        [SupineBridgeLeft],\n        [SupineBridgeRight],\n        [ScoringAverage],\n        'assessmentSummarySelf' AS source\n    FROM assessmentSummarySelf\n    WHERE athleteProfileId = {{ $json.body.attributes.athleteProfileId }}\n) AS combined\nORDER BY createdAt DESC"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        2120,
+        980
+      ],
+      "id": "152c5b35-b900-4a28-a335-35799627d13b",
+      "name": "Microsoft SQL",
+      "alwaysOutputData": true,
+      "credentials": {
+        "microsoftSql": {
+          "id": "QWx5JdDwbJpAMzMS",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "HTTP Request that will create a practice plan",
+        "method": "POST",
+        "url": "https://pdibackenddev.azurewebsites.net/api/challenge-drill//assign-practice-plan",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "athleteProfileId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+            },
+            {
+              "name": "keyFocusDrillOneId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+            },
+            {
+              "name": "keyFocusDrillTwoId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', ``, 'string') }}"
+            },
+            {
+              "name": "challengeOneId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', ``, 'string') }}"
+            },
+            {
+              "name": "challengeTwoId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', ``, 'string') }}"
+            },
+            {
+              "name": "golfSubFocusDrillId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters5_Value', ``, 'string') }}"
+            },
+            {
+              "name": "physicalDrillId",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters6_Value', ``, 'string') }}"
+            },
+            {
+              "name": "UNIQUE_KEY",
+              "value": "0B4887D3-211F-41D4-A7B4-9906AF0CABE4"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        2980,
+        1260
+      ],
+      "id": "8543e1d1-4b37-4e49-af5e-24916bf0688a",
+      "name": "Generate Plan"
     }
   ],
   "connections": {
     "Microsoft SQL2": {
       "main": [
-        [
-          {
-            "node": "Code2",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Code2": {
@@ -352,13 +436,7 @@
     },
     "Simple Memory2": {
       "ai_memory": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "OpenAI Chat Model2": {
@@ -374,24 +452,7 @@
     },
     "Athlete Details2": {
       "ai_tool": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Microsoft SQL Drills2": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Edit Fields5": {
@@ -409,8 +470,52 @@
       "main": [
         [
           {
-            "node": "Microsoft SQL2",
+            "node": "Microsoft SQL",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Challenges": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drills": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Plan": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -425,7 +530,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "fb2fde34-895f-4fb7-ba68-a3697c1e89bb",
+  "versionId": "38530878-e01a-4aa6-837d-15c5139a0754",
   "triggerCount": 0,
   "tags": []
 }
