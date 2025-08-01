@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-11T15:36:46.805Z",
-  "updatedAt": "2025-07-28T20:17:47.000Z",
+  "updatedAt": "2025-07-31T20:28:05.000Z",
   "id": "YIAccubJA1g1Zgkt",
   "name": "Levi Test Flow",
   "active": true,
@@ -75,7 +75,7 @@
         "descriptionType": "manual",
         "toolDescription": "Returns list of drills.",
         "operation": "executeQuery",
-        "query": "\nSELECT cd.id, cd.section, cd.groupName, cd.level, cd.rules, cd.goal, cd.setup, cd.drillName, cd.type\nFROM challengedrill cd\nLEFT JOIN assignment a \n    ON cd.id = a.challengeDrillId \n    AND a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }}\nWHERE a.challengeDrillId IS NULL\n  AND cd.section NOT IN (\n      'Stress Management', \n      'Target Focus', \n      'Identity/Mindset', \n      'Goal Setting', \n      'Emotional Control', \n      'Self Awareness'\n  );\n"
+        "query": "\nSELECT cd.id, cd.section, cd.groupName, cd.level, cd.rules, cd.goal, cd.setup, cd.drillName\nFROM challengedrill cd\nLEFT JOIN assignment a \n    ON cd.id = a.challengeDrillId \n    AND a.athleteProfileId = {{ $('Webhook').item.json.body.attributes.athleteProfileId }}\nWHERE a.challengeDrillId IS NULL\n  AND cd.section NOT IN (\n      'Stress Management', \n      'Target Focus', \n      'Identity/Mindset', \n      'Goal Setting', \n      'Emotional Control', \n      'Self Awareness'\n  );\n"
       },
       "type": "n8n-nodes-base.microsoftSqlTool",
       "typeVersion": 1.1,
@@ -965,7 +965,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "72fb20e1-4e50-4fd1-b6aa-a77d044d3723",
+  "versionId": "c1a90d4d-073c-4886-a594-d4ecd1df86dc",
   "triggerCount": 1,
   "tags": [
     {
