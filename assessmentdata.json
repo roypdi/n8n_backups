@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-14T14:35:24.950Z",
-  "updatedAt": "2025-07-28T15:06:13.000Z",
+  "updatedAt": "2025-08-01T14:25:48.000Z",
   "id": "wtIRa9GuyX1CFh4k",
   "name": "AssessmentData",
   "active": false,
@@ -9,7 +9,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  'summary' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummary\nWHERE athleteProfileId = 1210\n\nUNION ALL\n\nSELECT \n  'self' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummarySelf\nWHERE athleteProfileId = 1210\n\nORDER BY createdAt DESC;\n"
+        "query": "SELECT \n  'summary' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummary\nWHERE athleteProfileId = {{ $json.apId }}\n\nUNION ALL\n\nSELECT \n  'self' AS source,\n  [createdAt],\n  [modifiedAt],\n  [PdiWithScoringAvg],\n  [Putt3ft],\n  [Putt10ft],\n  [Putt30ft],\n  [Chip3yd],\n  [Chip10yd],\n  [Chip20yd],\n  [Driver],\n  [SixIronBFC],\n  [BroadJump],\n  [ASLRLeft],\n  [ASLRRight],\n  [DeepSquat],\n  [SupineBridgeLeft],\n  [SupineBridgeRight],\n  [ScoringAverage]\nFROM assessmentSummarySelf\nWHERE athleteProfileId = {{ $json.apId }}\n\nORDER BY createdAt DESC;\n"
       },
       "type": "n8n-nodes-base.microsoftSql",
       "typeVersion": 1.1,
@@ -91,7 +91,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "afedda5a-46a4-482b-985e-b077e6642740",
+  "versionId": "e948a0f9-1406-4b81-b781-40630575e18f",
   "triggerCount": 0,
   "tags": []
 }
